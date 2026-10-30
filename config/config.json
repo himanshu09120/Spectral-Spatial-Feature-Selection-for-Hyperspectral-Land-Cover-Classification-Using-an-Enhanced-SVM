@@ -1,0 +1,25 @@
+{
+  "dataset": {
+    "cube_path": "data/raw/WHU_Hi_LongKou.mat",
+    "labels_path": "data/raw/WHU_Hi_LongKou_gt.mat",
+    "cube_key": null,
+    "labels_key": null,
+    "cube_axes": null,
+    "expected_shape": [550, 400, 270],
+    "require_all_classes": true
+  },
+  "output_dir": "outputs",
+  "seeds": [7, 19, 42, 73, 101],
+  "split": {"train": 0.7, "validation": 0.15, "test": 0.15},
+  "protocols": ["pixel"],
+  "spatial_block": {"block_size": 40, "buffer": 2},
+  "train_cap_per_class": 1000,
+  "band_counts": [15, 30, 45, 60],
+  "component_counts": [20, 50],
+  "correlation_threshold": 0.95,
+  "spatial_window": 3,
+  "mnf": {"regularization": 0.001, "max_noise_pairs": 20000, "min_noise_pairs": 300},
+  "svm": {"C": [1.0, 10.0], "gamma": ["scale", 0.01], "cache_size_mb": 256, "linear": false},
+  "random_forest": {"n_estimators": [100, 200], "max_depth": 24, "min_samples_leaf": 2},
+  "execution": {"allow_training": false, "threads": 1, "prediction_batch_size": 4096, "save_models": true, "resume": true, "map_seeds": [7], "figure_dpi": 300}
+}

@@ -1,0 +1,9 @@
+# Compatible ranges for Python 3.9–3.12; no GPU dependencies.
+# Avoid the NumPy 2.0 macOS Accelerate floating-point warning issue on this Mac.
+numpy>=1.24,<2
+scipy>=1.10,<1.14
+scikit-learn>=1.3,<1.7
+matplotlib>=3.7,<3.10
+pandas>=2.0,<2.3
+h5py>=3.9,<3.13
+threadpoolctl>=3.1,<4

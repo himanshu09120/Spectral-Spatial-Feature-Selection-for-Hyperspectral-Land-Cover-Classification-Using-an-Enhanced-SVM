@@ -1,0 +1,23 @@
+{
+  "source_page": "https://rsidea.whu.edu.cn/e-resource_WHUHi_sharing.htm",
+  "form": "https://rsidea-whu-hi.mikecrm.com/MqhjRPN",
+  "archive_url": "https://rsidea.whu.edu.cn/code_data/WHU-Hi/Matlab_data_format.zip",
+  "archive_bytes": 900809518,
+  "etag": "W/\"900809518-1603809675770\"",
+  "files": [
+    {
+      "path": "WHU_Hi_LongKou_gt.mat",
+      "archive_entry": "Matlab_data_format/WHU-Hi-LongKou/WHU_Hi_LongKou_gt.mat",
+      "bytes": 5305,
+      "sha256": "b5a3634dc31a907ea6e60192ad7cd2b7946453ec57526ea7724941d8c1078178",
+      "crc32": 425921380
+    },
+    {
+      "path": "WHU_Hi_LongKou.mat",
+      "archive_entry": "Matlab_data_format/WHU-Hi-LongKou/WHU_Hi_LongKou.mat",
+      "bytes": 185938925,
+      "sha256": "4ef90f2222128245b8fc5c9c6003dfc37f43569991190eb32fcc8a3753430634",
+      "crc32": 629072717
+    }
+  ]
+}
