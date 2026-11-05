@@ -1,0 +1,106 @@
+[
+  {
+    "protocol": "pixel",
+    "seed": 19,
+    "method": "E3",
+    "requested_count": 20,
+    "feature_count": 20,
+    "parameters": {
+      "C": 1.0,
+      "gamma": "scale"
+    },
+    "validation_macro_f1": 0.9595735184663501,
+    "fit_seconds": 1.6462508000004163
+  },
+  {
+    "protocol": "pixel",
+    "seed": 19,
+    "method": "E3",
+    "requested_count": 20,
+    "feature_count": 20,
+    "parameters": {
+      "C": 1.0,
+      "gamma": 0.01
+    },
+    "validation_macro_f1": 0.9462363462480644,
+    "fit_seconds": 1.3084745000014664
+  },
+  {
+    "protocol": "pixel",
+    "seed": 19,
+    "method": "E3",
+    "requested_count": 20,
+    "feature_count": 20,
+    "parameters": {
+      "C": 10.0,
+      "gamma": "scale"
+    },
+    "validation_macro_f1": 0.9662454292381322,
+    "fit_seconds": 1.767397700001311
+  },
+  {
+    "protocol": "pixel",
+    "seed": 19,
+    "method": "E3",
+    "requested_count": 20,
+    "feature_count": 20,
+    "parameters": {
+      "C": 10.0,
+      "gamma": 0.01
+    },
+    "validation_macro_f1": 0.9681629641572691,
+    "fit_seconds": 0.8263967999992019
+  },
+  {
+    "protocol": "pixel",
+    "seed": 19,
+    "method": "E3",
+    "requested_count": 50,
+    "feature_count": 50,
+    "parameters": {
+      "C": 1.0,
+      "gamma": "scale"
+    },
+    "validation_macro_f1": 0.9413579674836967,
+    "fit_seconds": 4.969738300002064
+  },
+  {
+    "protocol": "pixel",
+    "seed": 19,
+    "method": "E3",
+    "requested_count": 50,
+    "feature_count": 50,
+    "parameters": {
+      "C": 1.0,
+      "gamma": 0.01
+    },
+    "validation_macro_f1": 0.9410201984554973,
+    "fit_seconds": 3.4819419000014022
+  },
+  {
+    "protocol": "pixel",
+    "seed": 19,
+    "method": "E3",
+    "requested_count": 50,
+    "feature_count": 50,
+    "parameters": {
+      "C": 10.0,
+      "gamma": "scale"
+    },
+    "validation_macro_f1": 0.9502676989318426,
+    "fit_seconds": 5.170732499998849
+  },
+  {
+    "protocol": "pixel",
+    "seed": 19,
+    "method": "E3",
+    "requested_count": 50,
+    "feature_count": 50,
+    "parameters": {
+      "C": 10.0,
+      "gamma": 0.01
+    },
+    "validation_macro_f1": 0.9588344392616168,
+    "fit_seconds": 3.2015430999999808
+  }
+]

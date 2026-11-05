@@ -1,0 +1,218 @@
+{
+  "accuracy": 0.9672772309497425,
+  "macro_precision": 0.8971235754377389,
+  "macro_recall": 0.9684322647408776,
+  "macro_f1": 0.9272674033272561,
+  "confusion_matrix": [
+    [
+      5135,
+      0,
+      4,
+      20,
+      0,
+      4,
+      0,
+      0,
+      14
+    ],
+    [
+      0,
+      1207,
+      7,
+      12,
+      22,
+      0,
+      0,
+      7,
+      1
+    ],
+    [
+      0,
+      3,
+      446,
+      3,
+      1,
+      0,
+      0,
+      0,
+      1
+    ],
+    [
+      35,
+      300,
+      66,
+      8706,
+      275,
+      0,
+      0,
+      32,
+      68
+    ],
+    [
+      0,
+      13,
+      1,
+      2,
+      595,
+      0,
+      0,
+      11,
+      0
+    ],
+    [
+      1,
+      0,
+      0,
+      0,
+      0,
+      1768,
+      0,
+      0,
+      9
+    ],
+    [
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      10053,
+      0,
+      5
+    ],
+    [
+      0,
+      25,
+      0,
+      0,
+      27,
+      0,
+      0,
+      1005,
+      12
+    ],
+    [
+      1,
+      0,
+      0,
+      1,
+      9,
+      1,
+      0,
+      10,
+      763
+    ]
+  ],
+  "per_class": [
+    {
+      "class_id": 1,
+      "class_name": "Corn",
+      "precision": 0.992846094354215,
+      "recall": 0.991887193355225,
+      "f1": 0.9923664122137404,
+      "support": 5177
+    },
+    {
+      "class_id": 2,
+      "class_name": "Cotton",
+      "precision": 0.7797157622739018,
+      "recall": 0.9609872611464968,
+      "f1": 0.8609129814550642,
+      "support": 1256
+    },
+    {
+      "class_id": 3,
+      "class_name": "Sesame",
+      "precision": 0.851145038167939,
+      "recall": 0.9823788546255506,
+      "f1": 0.9120654396728016,
+      "support": 454
+    },
+    {
+      "class_id": 4,
+      "class_name": "Broad-leaf soybean",
+      "precision": 0.9956541628545288,
+      "recall": 0.9181607255853196,
+      "f1": 0.9553385273784704,
+      "support": 9482
+    },
+    {
+      "class_id": 5,
+      "class_name": "Narrow-leaf soybean",
+      "precision": 0.6404736275565124,
+      "recall": 0.9565916398713826,
+      "f1": 0.7672469374597034,
+      "support": 622
+    },
+    {
+      "class_id": 6,
+      "class_name": "Rice",
+      "precision": 0.9966178128523112,
+      "recall": 0.9943757030371203,
+      "f1": 0.9954954954954955,
+      "support": 1778
+    },
+    {
+      "class_id": 7,
+      "class_name": "Water",
+      "precision": 1.0,
+      "recall": 0.9994035192365046,
+      "f1": 0.9997016706443914,
+      "support": 10059
+    },
+    {
+      "class_id": 8,
+      "class_name": "Roads and houses",
+      "precision": 0.9436619718309859,
+      "recall": 0.9401309635173059,
+      "f1": 0.9418931583880038,
+      "support": 1069
+    },
+    {
+      "class_id": 9,
+      "class_name": "Mixed weed",
+      "precision": 0.8739977090492554,
+      "recall": 0.9719745222929936,
+      "f1": 0.9203860072376358,
+      "support": 785
+    }
+  ],
+  "protocol": "pixel",
+  "seed": 101,
+  "method": "E1",
+  "fingerprint": "58f8e5ab00fe15cd0179328ae11b7572fce15e3f9eee8fd23e1ddad0142f824b",
+  "split_digest": "d61f8ba956ca138de35cbb828f81e5bf3db4dc2eba9f0330b77070b06eaf9eb5",
+  "feature_count": 270,
+  "preprocessing_seconds": 0.08248679999996966,
+  "search_seconds": 102.29125599999952,
+  "fit_seconds": 4.2304746999998315,
+  "prediction_seconds": 11.156507699999565,
+  "validation_macro_f1": 0.9288161813198338,
+  "selected_configuration": {
+    "protocol": "pixel",
+    "seed": 101,
+    "method": "E1",
+    "requested_count": 270,
+    "feature_count": 270,
+    "parameters": {
+      "C": 10.0,
+      "gamma": 0.01
+    },
+    "validation_macro_f1": 0.9288161813198338,
+    "fit_seconds": 4.2304746999998315
+  },
+  "selected_bands_zero_based": null,
+  "training_counts": {
+    "1": 1000,
+    "2": 1000,
+    "3": 1000,
+    "4": 1000,
+    "5": 1000,
+    "6": 1000,
+    "7": 1000,
+    "8": 1000,
+    "9": 1000
+  },
+  "majority_uses_uncapped_training_priors": false
+}

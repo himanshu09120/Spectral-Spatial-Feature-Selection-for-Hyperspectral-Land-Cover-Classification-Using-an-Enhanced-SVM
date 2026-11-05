@@ -1,0 +1,28 @@
+{
+  "cube_shape": [
+    550,
+    400,
+    270
+  ],
+  "label_shape": [
+    550,
+    400
+  ],
+  "class_counts": {
+    "0": 15458,
+    "1": 34511,
+    "2": 8374,
+    "3": 3031,
+    "4": 63212,
+    "5": 4151,
+    "6": 11854,
+    "7": 67056,
+    "8": 7124,
+    "9": 5229
+  },
+  "labelled_pixels": 204542,
+  "missing_classes": [],
+  "cube_key": "WHU_Hi_LongKou",
+  "labels_key": "WHU_Hi_LongKou_gt",
+  "documented_counts_match": true
+}

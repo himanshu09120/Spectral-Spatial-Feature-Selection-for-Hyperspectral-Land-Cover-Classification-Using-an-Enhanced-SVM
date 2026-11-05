@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
+from concurrent.futures import ThreadPoolExecutor
 import hashlib
 import itertools
 import json
@@ -152,11 +153,22 @@ def hyperparameters(method, config):
     return [{"C": c, "gamma": gamma} for c, gamma in itertools.product(config["svm"]["C"], config["svm"]["gamma"])]
 
 
-def batched_predict(model, rep, raw, indices, batch_size):
+def batched_predict(model, rep, raw, indices, batch_size, workers=1):
+    """Predict independent batches with bounded CPU workers and stable row order."""
     result = np.empty(len(indices), dtype=np.int16)
-    for start in range(0, len(indices), batch_size):
+    def batch(start):
         stop = start + batch_size
-        result[start:stop] = model.predict(rep.transform(raw, indices[start:stop]))
+        return start, model.predict(rep.transform(raw, indices[start:stop]))
+
+    starts = range(0, len(indices), batch_size)
+    if workers == 1:
+        for start in starts:
+            offset, values = batch(start)
+            result[offset:offset + len(values)] = values
+    else:
+        with ThreadPoolExecutor(max_workers=workers) as executor:
+            for offset, values in executor.map(batch, starts):
+                result[offset:offset + len(values)] = values
     return result
 
 
@@ -196,7 +208,8 @@ def execute_method(method, factory, output, protocol, seed, fingerprint):
             start = time.perf_counter()
             model.fit(Xtrain, labels[train])
             fit_seconds = time.perf_counter() - start
-            predicted = batched_predict(model, rep, raw, split["validation"], config["execution"]["prediction_batch_size"])
+            predicted = batched_predict(model, rep, raw, split["validation"], config["execution"]["prediction_batch_size"],
+                                        config["execution"].get("prediction_workers", 1))
             score = float(f1_score(labels[split["validation"]], predicted, labels=CLASS_IDS, average="macro", zero_division=0))
             candidate = dict(protocol=protocol, seed=seed, method=method, requested_count=count,
                              feature_count=rep.count, parameters=params, validation_macro_f1=score, fit_seconds=fit_seconds)
@@ -212,7 +225,8 @@ def execute_method(method, factory, output, protocol, seed, fingerprint):
     raw = factory.raw(rep)
     # Test measurements and labels are accessed for scoring only after selection finishes.
     start = time.perf_counter()
-    prediction = batched_predict(model, rep, raw, split["test"], config["execution"]["prediction_batch_size"])
+    prediction = batched_predict(model, rep, raw, split["test"], config["execution"]["prediction_batch_size"],
+                                 config["execution"].get("prediction_workers", 1))
     prediction_seconds = time.perf_counter() - start
     result = classification_metrics(labels[split["test"]], prediction)
     result.update(protocol=protocol, seed=seed, method=method, fingerprint=fingerprint,
@@ -247,7 +261,8 @@ def execute_method(method, factory, output, protocol, seed, fingerprint):
     if seed in config["execution"]["map_seeds"] and method in ("E1", "E5"):
         indices = np.flatnonzero(labels > 0)
         land_cover = np.zeros_like(labels)
-        land_cover[indices] = batched_predict(model, rep, raw, indices, config["execution"]["prediction_batch_size"])
+        land_cover[indices] = batched_predict(model, rep, raw, indices, config["execution"]["prediction_batch_size"],
+                                             config["execution"].get("prediction_workers", 1))
         land_cover = land_cover.reshape(factory.labels.shape)
         np.save(prediction_dir / f"{method}_map.npy", land_cover)
         prediction_figures(factory.labels, land_cover, split["test"], figure_dir, method, config["execution"]["figure_dpi"])

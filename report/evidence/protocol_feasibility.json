@@ -1,0 +1,104 @@
+[
+  {
+    "protocol": "pixel",
+    "seed": 7,
+    "status": "feasible",
+    "partitions": {
+      "train": 9000,
+      "train_pool": 143179,
+      "validation": 30681,
+      "test": 30682
+    },
+    "noise_pairs": 2254
+  },
+  {
+    "protocol": "pixel",
+    "seed": 19,
+    "status": "feasible",
+    "partitions": {
+      "train": 9000,
+      "train_pool": 143179,
+      "validation": 30681,
+      "test": 30682
+    },
+    "noise_pairs": 2219
+  },
+  {
+    "protocol": "pixel",
+    "seed": 42,
+    "status": "feasible",
+    "partitions": {
+      "train": 9000,
+      "train_pool": 143179,
+      "validation": 30681,
+      "test": 30682
+    },
+    "noise_pairs": 2163
+  },
+  {
+    "protocol": "pixel",
+    "seed": 73,
+    "status": "feasible",
+    "partitions": {
+      "train": 9000,
+      "train_pool": 143179,
+      "validation": 30681,
+      "test": 30682
+    },
+    "noise_pairs": 2276
+  },
+  {
+    "protocol": "pixel",
+    "seed": 101,
+    "status": "feasible",
+    "partitions": {
+      "train": 9000,
+      "train_pool": 143179,
+      "validation": 30681,
+      "test": 30682
+    },
+    "noise_pairs": 2256
+  },
+  {
+    "protocol": "spatial_block",
+    "seed": 7,
+    "status": "infeasible",
+    "reason": "spatial_block split seed 7: validation lacks classes; choose block design before evaluation"
+  },
+  {
+    "protocol": "spatial_block",
+    "seed": 19,
+    "status": "infeasible",
+    "reason": "spatial_block split seed 19: validation lacks classes; choose block design before evaluation"
+  },
+  {
+    "protocol": "spatial_block",
+    "seed": 42,
+    "status": "feasible",
+    "partitions": {
+      "train": 8720,
+      "train_pool": 134151,
+      "validation": 25382,
+      "test": 25056
+    },
+    "noise_pairs": 4048
+  },
+  {
+    "protocol": "spatial_block",
+    "seed": 73,
+    "status": "infeasible",
+    "reason": "spatial_block split seed 73: validation lacks classes; choose block design before evaluation"
+  },
+  {
+    "protocol": "spatial_block",
+    "seed": 101,
+    "status": "feasible",
+    "partitions": {
+      "train": 8656,
+      "train_pool": 134326,
+      "validation": 24268,
+      "test": 25683
+    },
+    "noise_pairs": 3920
+  }
+]

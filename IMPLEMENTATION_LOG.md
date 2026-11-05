@@ -1,3 +1,33 @@
+# Completion work - 3 November 2026
+
+Continued the 2 November completion work in a new session (Claude Code, Sonnet 5) to finish the remaining real-data training and finalize the submission.
+
+- Found the run interrupted after only seeds 7 (complete) and 19 (partial: E0-E1) had finished; resumed `python -m src.main --run --allow-training` to complete the remaining seeds.
+- A background-process mistake caused two instances of the runner to execute concurrently for a short window (an orphaned process from a mis-backgrounded first attempt survived after its wrapper script exited, and a stale-looking `.run.lock` was removed while that process was still live, letting a second instance start). Confirmed no live process held the lock before each restart. The race corrupted exactly one artifact, `pixel/seed_42/E1` (identical winning hyperparameters and validation macro-F1 in both the result and selection-audit files, but a mismatched `fit_seconds` field from the two interleaved writers). Deleted that method's result, selection audit, model, prediction and figure files and recomputed it cleanly; `scripts/audit_results.py` now independently re-verifies all 35 seed/method results against saved held-out predictions with status PASS (155 total candidate fits).
+- All 22 tests pass after completion. `config/config.json`'s `execution.allow_training` remains `false` by default; training only ran because `--allow-training` was passed explicitly, consistent with the project's safety default.
+- Bootstrapped `pip` into the project `.venv` (missing from the prior environment) and installed `requirements-report.txt` to render the PDF.
+- Ran `scripts/finalize_report.py` (re-audits, rewrites `report/final_report.md` with measured five-seed statistics, regenerates `report/evidence/` and `report/figures/`) and `scripts/render_report.py` (produces `output/pdf/final_report.pdf`, 10 pages).
+- Measured headline result: FRSS-SVM (E5) achieves 97.131% ± 0.201% accuracy and 92.936% ± 0.476% macro-F1 across five seeds, using 18 features on average versus 270 for the full-spectrum baseline. MNF-SVM (E3) has the highest observed mean macro-F1 (96.665%). Full tables are in `report/final_report.md` Sections 13-16.
+- Updated `report/individual_contributions.md`'s AI-assistance disclosure to credit this session's work (resuming training, diagnosing/repairing the concurrency artifact, auditing, and report/PDF generation) alongside the prior Codex-assisted work.
+- No git commit or push was performed in this session; working tree changes remain local pending the owner's review before submission.
+
+---
+
+# Completion work - 2 November 2026
+
+The current owner explicitly authorized full CPU experiments in this session, superseding the historical no-training restriction documented below. The original implementation log is retained as history, not the current execution status.
+
+- Read all source modules, tests, configuration, documentation, and both pages of `PR Project Instructions M2026.pdf`; no applicable AGENTS.md was found.
+- Created a project-local Python 3.12.5 environment on Windows and downloaded official LongKou files; both file hashes match the earlier provenance.
+- Passed the original 21 tests and an actual E0-E6 synthetic training run. Synthetic outputs remain isolated and are never research results.
+- Updated MATLAB `Main` to explicitly enable training for its run mode and display summary/per-class tables, metric charts, confusion matrices and the map. MATLAB R2024b executed `Main('dry-run')` successfully.
+- Serial prediction proved expensive. Preserved the interrupted initial research attempt under `outputs/serial_preflight_20261102/`, verified its PID had stopped, and restarted in a fresh result directory after adding four bounded prediction workers. All statistical choices remain unchanged. Fitting and BLAS remain single-threaded. A new real-classifier regression verifies exact serial/parallel prediction equality; all 22 tests pass.
+- Checked real-data block feasibility without training: seeds 7, 19 and 73 fail validation class coverage; seeds 42 and 101 pass. No seeds or block settings were changed. All five pixel splits contain 143,179 pool / 30,681 validation / 30,682 test pixels; the shared fit subset has 9,000 pixels and 2,163-2,276 eligible MNF noise pairs.
+- Added independent result auditing, reproducible report generation, PDF export, and a portable report evidence bundle. Completion measurements will be recorded after the full run finishes.
+- Public repository accessibility verified. No commit or push has been performed. The owner supplied Himanshu Sinha (S20240020290) and Ghule Yash Mahesh (S20240020288), requesting equal contributions. The appendix records a 50/50 responsibility allocation and explicitly distinguishes allocation from commit-level authorship evidence.
+
+---
+
 # Implementation log and handoff
 
 ## Scope and authorization

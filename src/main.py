@@ -32,6 +32,9 @@ def validate_config(config):
         raise ValueError("Seeds must be integers in [0, 2**32)")
     if config["train_cap_per_class"] < 1 or config["execution"]["threads"] < 1 or config["execution"]["prediction_batch_size"] < 1:
         raise ValueError("Training cap, threads and prediction batch size must be positive")
+    workers = config["execution"].get("prediction_workers", 1)
+    if type(workers) is not int or workers < 1:
+        raise ValueError("prediction_workers must be a positive integer")
     if not 0 < config["correlation_threshold"] <= 1:
         raise ValueError("Correlation threshold must lie in (0, 1]")
     if config["spatial_window"] < 1 or config["spatial_window"] % 2 != 1:

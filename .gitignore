@@ -8,3 +8,4 @@ data/raw/*
 outputs/
 *.part
 *.zip
+tmp/

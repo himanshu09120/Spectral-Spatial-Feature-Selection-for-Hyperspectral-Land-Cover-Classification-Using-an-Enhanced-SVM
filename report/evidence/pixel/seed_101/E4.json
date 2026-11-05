@@ -1,0 +1,225 @@
+{
+  "accuracy": 0.9018316928492276,
+  "macro_precision": 0.7440578920436766,
+  "macro_recall": 0.8715604698049666,
+  "macro_f1": 0.7846153244176804,
+  "confusion_matrix": [
+    [
+      4828,
+      0,
+      1,
+      21,
+      0,
+      47,
+      0,
+      2,
+      278
+    ],
+    [
+      1,
+      1014,
+      22,
+      18,
+      162,
+      0,
+      0,
+      34,
+      5
+    ],
+    [
+      0,
+      11,
+      378,
+      45,
+      3,
+      0,
+      0,
+      0,
+      17
+    ],
+    [
+      51,
+      274,
+      585,
+      7586,
+      397,
+      2,
+      0,
+      116,
+      471
+    ],
+    [
+      0,
+      62,
+      4,
+      3,
+      531,
+      0,
+      0,
+      20,
+      2
+    ],
+    [
+      9,
+      0,
+      0,
+      0,
+      1,
+      1749,
+      0,
+      3,
+      16
+    ],
+    [
+      0,
+      0,
+      0,
+      0,
+      0,
+      5,
+      10050,
+      0,
+      4
+    ],
+    [
+      0,
+      77,
+      0,
+      1,
+      42,
+      1,
+      0,
+      943,
+      5
+    ],
+    [
+      15,
+      8,
+      40,
+      52,
+      11,
+      50,
+      0,
+      18,
+      591
+    ]
+  ],
+  "per_class": [
+    {
+      "class_id": 1,
+      "class_name": "Corn",
+      "precision": 0.9845024469820555,
+      "recall": 0.9325864400231795,
+      "f1": 0.9578414839797639,
+      "support": 5177
+    },
+    {
+      "class_id": 2,
+      "class_name": "Cotton",
+      "precision": 0.7012448132780082,
+      "recall": 0.8073248407643312,
+      "f1": 0.7505551443375278,
+      "support": 1256
+    },
+    {
+      "class_id": 3,
+      "class_name": "Sesame",
+      "precision": 0.36699029126213595,
+      "recall": 0.8325991189427313,
+      "f1": 0.5094339622641509,
+      "support": 454
+    },
+    {
+      "class_id": 4,
+      "class_name": "Broad-leaf soybean",
+      "precision": 0.9818793683665545,
+      "recall": 0.8000421851929973,
+      "f1": 0.8816829381682938,
+      "support": 9482
+    },
+    {
+      "class_id": 5,
+      "class_name": "Narrow-leaf soybean",
+      "precision": 0.4629468177855275,
+      "recall": 0.8536977491961415,
+      "f1": 0.6003391746749576,
+      "support": 622
+    },
+    {
+      "class_id": 6,
+      "class_name": "Rice",
+      "precision": 0.9433656957928802,
+      "recall": 0.9836895388076491,
+      "f1": 0.9631057268722467,
+      "support": 1778
+    },
+    {
+      "class_id": 7,
+      "class_name": "Water",
+      "precision": 1.0,
+      "recall": 0.999105278854757,
+      "f1": 0.9995524392063255,
+      "support": 10059
+    },
+    {
+      "class_id": 8,
+      "class_name": "Roads and houses",
+      "precision": 0.8301056338028169,
+      "recall": 0.882132834424696,
+      "f1": 0.8553287981859411,
+      "support": 1069
+    },
+    {
+      "class_id": 9,
+      "class_name": "Mixed weed",
+      "precision": 0.42548596112311016,
+      "recall": 0.7528662420382166,
+      "f1": 0.5436982520699172,
+      "support": 785
+    }
+  ],
+  "protocol": "pixel",
+  "seed": 101,
+  "method": "E4",
+  "fingerprint": "58f8e5ab00fe15cd0179328ae11b7572fce15e3f9eee8fd23e1ddad0142f824b",
+  "split_digest": "d61f8ba956ca138de35cbb828f81e5bf3db4dc2eba9f0330b77070b06eaf9eb5",
+  "feature_count": 6,
+  "preprocessing_seconds": 0.17634130000078585,
+  "search_seconds": 47.916851800000586,
+  "fit_seconds": 1.6167451000001165,
+  "prediction_seconds": 6.782706899999539,
+  "validation_macro_f1": 0.7853322580148343,
+  "selected_configuration": {
+    "protocol": "pixel",
+    "seed": 101,
+    "method": "E4",
+    "requested_count": 6,
+    "feature_count": 6,
+    "parameters": {
+      "C": 10.0,
+      "gamma": "scale"
+    },
+    "validation_macro_f1": 0.7853322580148343,
+    "fit_seconds": 1.6167451000001165
+  },
+  "selected_bands_zero_based": [
+    145,
+    267,
+    141,
+    138,
+    134,
+    1
+  ],
+  "training_counts": {
+    "1": 1000,
+    "2": 1000,
+    "3": 1000,
+    "4": 1000,
+    "5": 1000,
+    "6": 1000,
+    "7": 1000,
+    "8": 1000,
+    "9": 1000
+  },
+  "majority_uses_uncapped_training_priors": false
+}

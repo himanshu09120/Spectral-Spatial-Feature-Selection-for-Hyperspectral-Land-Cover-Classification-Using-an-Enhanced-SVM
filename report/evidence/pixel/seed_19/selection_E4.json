@@ -1,0 +1,54 @@
+[
+  {
+    "protocol": "pixel",
+    "seed": 19,
+    "method": "E4",
+    "requested_count": 6,
+    "feature_count": 6,
+    "parameters": {
+      "C": 1.0,
+      "gamma": "scale"
+    },
+    "validation_macro_f1": 0.7315102564819722,
+    "fit_seconds": 1.018793100000039
+  },
+  {
+    "protocol": "pixel",
+    "seed": 19,
+    "method": "E4",
+    "requested_count": 6,
+    "feature_count": 6,
+    "parameters": {
+      "C": 1.0,
+      "gamma": 0.01
+    },
+    "validation_macro_f1": 0.6668858580862521,
+    "fit_seconds": 2.4522142999994685
+  },
+  {
+    "protocol": "pixel",
+    "seed": 19,
+    "method": "E4",
+    "requested_count": 6,
+    "feature_count": 6,
+    "parameters": {
+      "C": 10.0,
+      "gamma": "scale"
+    },
+    "validation_macro_f1": 0.7703097782889442,
+    "fit_seconds": 1.1843579999986105
+  },
+  {
+    "protocol": "pixel",
+    "seed": 19,
+    "method": "E4",
+    "requested_count": 6,
+    "feature_count": 6,
+    "parameters": {
+      "C": 10.0,
+      "gamma": 0.01
+    },
+    "validation_macro_f1": 0.7058850665496579,
+    "fit_seconds": 1.2978546000013012
+  }
+]

@@ -1,0 +1,26 @@
+[
+  {
+    "protocol": "pixel",
+    "seed": 101,
+    "method": "E6",
+    "requested_count": 6,
+    "feature_count": 18,
+    "parameters": {
+      "n_estimators": 100
+    },
+    "validation_macro_f1": 0.8913831746716327,
+    "fit_seconds": 9.660055199999988
+  },
+  {
+    "protocol": "pixel",
+    "seed": 101,
+    "method": "E6",
+    "requested_count": 6,
+    "feature_count": 18,
+    "parameters": {
+      "n_estimators": 200
+    },
+    "validation_macro_f1": 0.8922087440606187,
+    "fit_seconds": 18.704413100000238
+  }
+]

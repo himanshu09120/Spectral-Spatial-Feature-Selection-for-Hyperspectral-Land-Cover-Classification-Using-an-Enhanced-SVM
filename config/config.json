@@ -21,5 +21,5 @@
   "mnf": {"regularization": 0.001, "max_noise_pairs": 20000, "min_noise_pairs": 300},
   "svm": {"C": [1.0, 10.0], "gamma": ["scale", 0.01], "cache_size_mb": 256, "linear": false},
   "random_forest": {"n_estimators": [100, 200], "max_depth": 24, "min_samples_leaf": 2},
-  "execution": {"allow_training": false, "threads": 1, "prediction_batch_size": 4096, "save_models": true, "resume": true, "map_seeds": [7], "figure_dpi": 300}
+  "execution": {"allow_training": false, "threads": 1, "prediction_workers": 4, "prediction_batch_size": 4096, "save_models": true, "resume": true, "map_seeds": [7], "figure_dpi": 300}
 }

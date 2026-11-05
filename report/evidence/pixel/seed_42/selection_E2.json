@@ -1,0 +1,106 @@
+[
+  {
+    "protocol": "pixel",
+    "seed": 42,
+    "method": "E2",
+    "requested_count": 20,
+    "feature_count": 20,
+    "parameters": {
+      "C": 1.0,
+      "gamma": "scale"
+    },
+    "validation_macro_f1": 0.9232647924697702,
+    "fit_seconds": 3.8793383000001995
+  },
+  {
+    "protocol": "pixel",
+    "seed": 42,
+    "method": "E2",
+    "requested_count": 20,
+    "feature_count": 20,
+    "parameters": {
+      "C": 1.0,
+      "gamma": 0.01
+    },
+    "validation_macro_f1": 0.9048420343107773,
+    "fit_seconds": 3.666815499999757
+  },
+  {
+    "protocol": "pixel",
+    "seed": 42,
+    "method": "E2",
+    "requested_count": 20,
+    "feature_count": 20,
+    "parameters": {
+      "C": 10.0,
+      "gamma": "scale"
+    },
+    "validation_macro_f1": 0.9334304330698401,
+    "fit_seconds": 3.671817899999951
+  },
+  {
+    "protocol": "pixel",
+    "seed": 42,
+    "method": "E2",
+    "requested_count": 20,
+    "feature_count": 20,
+    "parameters": {
+      "C": 10.0,
+      "gamma": 0.01
+    },
+    "validation_macro_f1": 0.9338163813431221,
+    "fit_seconds": 1.8483819000002768
+  },
+  {
+    "protocol": "pixel",
+    "seed": 42,
+    "method": "E2",
+    "requested_count": 50,
+    "feature_count": 50,
+    "parameters": {
+      "C": 1.0,
+      "gamma": "scale"
+    },
+    "validation_macro_f1": 0.929060076657669,
+    "fit_seconds": 8.728061599999819
+  },
+  {
+    "protocol": "pixel",
+    "seed": 42,
+    "method": "E2",
+    "requested_count": 50,
+    "feature_count": 50,
+    "parameters": {
+      "C": 1.0,
+      "gamma": 0.01
+    },
+    "validation_macro_f1": 0.9268612376160201,
+    "fit_seconds": 5.951424799999586
+  },
+  {
+    "protocol": "pixel",
+    "seed": 42,
+    "method": "E2",
+    "requested_count": 50,
+    "feature_count": 50,
+    "parameters": {
+      "C": 10.0,
+      "gamma": "scale"
+    },
+    "validation_macro_f1": 0.938063323350046,
+    "fit_seconds": 8.36689750000005
+  },
+  {
+    "protocol": "pixel",
+    "seed": 42,
+    "method": "E2",
+    "requested_count": 50,
+    "feature_count": 50,
+    "parameters": {
+      "C": 10.0,
+      "gamma": 0.01
+    },
+    "validation_macro_f1": 0.9445920137534741,
+    "fit_seconds": 5.684052600000541
+  }
+]

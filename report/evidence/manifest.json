@@ -1,0 +1,108 @@
+{
+  "fingerprint": "58f8e5ab00fe15cd0179328ae11b7572fce15e3f9eee8fd23e1ddad0142f824b",
+  "config": {
+    "dataset": {
+      "cube_path": "data/raw/WHU_Hi_LongKou.mat",
+      "labels_path": "data/raw/WHU_Hi_LongKou_gt.mat",
+      "cube_key": null,
+      "labels_key": null,
+      "cube_axes": null,
+      "expected_shape": [
+        550,
+        400,
+        270
+      ],
+      "require_all_classes": true
+    },
+    "output_dir": "outputs",
+    "seeds": [
+      7,
+      19,
+      42,
+      73,
+      101
+    ],
+    "split": {
+      "train": 0.7,
+      "validation": 0.15,
+      "test": 0.15
+    },
+    "protocols": [
+      "pixel"
+    ],
+    "spatial_block": {
+      "block_size": 40,
+      "buffer": 2
+    },
+    "train_cap_per_class": 1000,
+    "band_counts": [
+      15,
+      30,
+      45,
+      60
+    ],
+    "component_counts": [
+      20,
+      50
+    ],
+    "correlation_threshold": 0.95,
+    "spatial_window": 3,
+    "mnf": {
+      "regularization": 0.001,
+      "max_noise_pairs": 20000,
+      "min_noise_pairs": 300
+    },
+    "svm": {
+      "C": [
+        1.0,
+        10.0
+      ],
+      "gamma": [
+        "scale",
+        0.01
+      ],
+      "cache_size_mb": 256,
+      "linear": false
+    },
+    "random_forest": {
+      "n_estimators": [
+        100,
+        200
+      ],
+      "max_depth": 24,
+      "min_samples_leaf": 2
+    },
+    "execution": {
+      "allow_training": true,
+      "threads": 1,
+      "prediction_workers": 4,
+      "prediction_batch_size": 4096,
+      "save_models": true,
+      "resume": true,
+      "map_seeds": [
+        7
+      ],
+      "figure_dpi": 300
+    }
+  },
+  "environment": {
+    "python": "3.12.5 (tags/v3.12.5:ff3bc82, Aug  6 2024, 20:45:27) [MSC v.1940 64 bit (AMD64)]",
+    "platform": "Windows-11-10.0.26300-SP0",
+    "executable": "C:\\Users\\physi\\Spectral-Spatial-Feature-Selection-for-Hyperspectral-Land-Cover-Classification-Using-an-Enhanced-SVM\\.venv\\Scripts\\python.exe",
+    "packages": {
+      "numpy": "1.26.4",
+      "scipy": "1.13.1",
+      "scikit-learn": "1.6.1",
+      "matplotlib": "3.9.4",
+      "pandas": "2.2.3",
+      "h5py": "3.12.1",
+      "joblib": "1.6.0",
+      "threadpoolctl": "3.7.0"
+    }
+  },
+  "dataset_files_sha256": {
+    "cube_path": "4ef90f2222128245b8fc5c9c6003dfc37f43569991190eb32fcc8a3753430634",
+    "labels_path": "b5a3634dc31a907ea6e60192ad7cd2b7946453ec57526ea7724941d8c1078178"
+  },
+  "synthetic_only": false
+}

@@ -2,11 +2,15 @@
 
 **Pattern Recognition semester project — deadline: 5 November 2026.**
 
-**Status as of 29 October 2026:** methodology and software implemented; official dataset downloaded and inspected; no classifiers trained at the owner's request. All classification findings, prediction maps and runtime comparisons are **pending**. This document is a scientific report framework, not a completed empirical study.
+**Himanshu Sinha — S20240020290**
+
+**Ghule Yash Mahesh — S20240020288**
+
+**Status as of 3 November 2026:** all seven methods completed on all five predeclared seeds. Real held-out predictions were independently audited. Results are for a transductive, same-scene random-pixel protocol.
 
 ## 1. Abstract
 
-This project investigates land-cover classification from hyperspectral measurements using classical pattern recognition. The proposed Fisher-guided Redundancy-Reduced Spectral–Spatial SVM (FRSS-SVM) combines supervised band ranking, correlation pruning and local measurement statistics. The experiment design compares majority, full-spectrum SVM, PCA-SVM, MNF-SVM, selected-band SVM and a spatial Random Forest on WHU-Hi-LongKou. A common split and training cap support fair comparisons, while validation macro-F1 selects configurations. Five seeds and an optional buffered block protocol address repeatability and spatial dependence. The official files satisfy the course's size and class requirements. Classification performance has not been measured; superiority remains a research hypothesis.
+This study evaluates classical spectral and spatial features for nine-class land-cover recognition on WHU-Hi-LongKou (550 × 400 pixels, 270 bands). Fisher ranking and strict correlation pruning select bands; local means and standard deviations augment them for an RBF SVM (FRSS-SVM). Seven methods share stratified 70/15/15 partitions, with 9,000 capped training pixels and 30,682 held-out test pixels per seed. Validation macro-F1 selects hyperparameters. Across five seeds, FRSS-SVM achieves 97.131 ± 0.201% accuracy and 92.936 ± 0.476% macro-F1. Its macro-F1 difference from the full-spectrum SVM is -0.307 percentage points. MNF-SVM has the highest mean macro-F1 among the evaluated methods. Reported variability is sample SD across splits, not independent-scene uncertainty.
 
 ## 2. Introduction and motivation
 
@@ -23,7 +27,7 @@ Given a cube X ∈ R^(H×W×B), predict one of nine classes for each labelled pi
 3. How do selected bands compare with PCA and noise-adjusted components under a shared training budget?
 4. What accuracy, feature-size and runtime trade-offs arise between SVM and Random Forest?
 
-These are hypotheses to test. No improvement is guaranteed by the design.
+These questions are assessed using the held-out results in Sections 13-16; improvements are not assumed.
 
 ## 5. Related work
 
@@ -87,51 +91,143 @@ For each selected band, compute a 3×3 reflected-border local mean m and populat
 
 SVM uses C={1,10}, γ={scale,0.01}; RF uses depth≤24 and leaf size≥2. All searches maximize validation macro-F1, with deterministic ties favoring earlier smaller counts. Infeasible dimensions are skipped. If no requested band count survives strict pruning, the entire nonempty pruned set is the predeclared fallback. An optional linear SVM is disabled by default.
 
-The default upper budget is 305 candidate fits over five seeds; no such fits have been performed. One worker and bounded BLAS threads, 256-MB SVM cache and batched predictions constrain resource use. Exact execution libraries and configuration are recorded in a fingerprint manifest when a run starts. The tested environment is macOS ARM64, Python 3.9.6, with compatible scientific wheels recorded in `requirements-lock.txt`. No MATLAB executable was found.
+The predeclared upper budget is 305 candidate fits. Strict feature feasibility reduced the actual search to 155 fits, all completed. One worker, bounded BLAS threads, a 256-MB SVM cache and 4,096-row prediction batches constrain resources. Four bounded workers predict independent batches; classifier fitting and BLAS remain at one thread. Serial/parallel prediction equality was regression tested. The measured environment is Windows, Python 3.12.5, Intel Core i5-12450H, approximately 16 GB RAM; GPU acceleration was not used. Exact dependencies, source hashes, dataset hashes and configuration are preserved in report/evidence/manifest.json and requirements-windows-lock.txt.
 
 ## 11. Spatial sensitivity protocol
 
-An additional, opt-in block protocol assigns whole 40×40 pixel blocks to partitions with the configured proportions, then erodes each region by a 2-pixel buffer. Neighbourhood footprints are separated and unit checked. Block splits are not guaranteed class stratification or exact pixel proportions. Missing-class partitions raise an error rather than retrying seeds based on performance. This protocol is coded but has not been evaluated on the real scene; random-pixel findings must not be described as independent geographic generalization.
+An additional, opt-in block protocol assigns whole 40×40 pixel blocks to partitions with the configured proportions, then erodes each region by a 2-pixel buffer. Neighbourhood footprints are separated and unit checked. Block splits are not guaranteed class stratification or exact pixel proportions. Missing-class partitions raise an error rather than retrying seeds based on performance. A preflight check on the real scene found missing validation classes for seeds 7, 19 and 73; seeds 42 and 101 were feasible. No block classifiers were trained, and seeds were not replaced or selectively reported. Thus no complete five-seed spatial sensitivity claim is possible with this predefined block design. Random-pixel findings must not be described as independent geographic generalization. Details are in report/evidence/protocol_feasibility.json.
 
 ## 12. Evaluation metrics
 
 Overall accuracy is correct predictions divided by test pixels. Class precision is TP/(TP+FP), recall TP/(TP+FN), and F1 their harmonic mean. Macro metrics give equal weight to the fixed nine-class ordering. Undefined ratios become zero consistently. Raw and row-normalized confusion matrices use true rows and predicted columns. Five-run means and sample SD (denominator n−1) are computed from saved measurements; a single run has undefined SD. Completion flags expose missing seeds.
 
-## 13. Results and comparison tables — pending
 
-**No classifier training, validation search or test evaluation has been run.** The following entries must remain pending until measured output exists.
 
-| Method | OA mean ± sample SD | Macro-F1 mean ± sample SD | Test runs |
-|---|---|---|---|
-| E0 | Pending | Pending | 0/5 |
-| E1 | Pending | Pending | 0/5 |
-| E2 | Pending | Pending | 0/5 |
-| E3 | Pending | Pending | 0/5 |
-| E4 | Pending | Pending | 0/5 |
-| E5 | Pending | Pending | 0/5 |
-| E6 | Pending | Pending | 0/5 |
 
-Future runs generate `outputs/results.md`, `metrics/per_seed.csv`, `metrics/summary.csv`, `metrics/per_class.csv` and `metrics/per_class_summary.csv`. Copy measured tables here only after verifying all five seeds and common test splits. No published benchmark values are substituted into this table.
 
-## 14. Confusion matrices and prediction maps — pending
 
-The renderer will save count and row-normalized matrices for every method and seed, with one shared class palette. E1/E5 maps are configured for seed 7; complete maps include training pixels and are descriptive. Error maps display test pixels only. Once measured outputs exist, identify confused class pairs, inspect crop boundaries and distinguish systematic errors from small-support effects. No confusion pattern has been observed yet.
 
-## 15. Ablation study — pending
+## 13. Measured test results
 
-Compare E1 full-spectrum SVM, E4 selected spectral SVM and E5 spatial SVM. Saved `ablation_deltas.csv` uses paired seeds and the same test split, including OA, macro metrics, feature counts and runtimes. Report class-wise precision/recall beside aggregate changes. Since E4/E5 tune counts independently, this isolates tuned method families rather than an exact fixed-band spatial intervention; matched-count validation curves provide additional context. Gains, losses and uncertainty must all be reported honestly.
 
-## 16. Runtime and dimensionality — pending
+Accuracy and macro-F1 are percentages; ± denotes sample SD over seeds 7, 19, 42, 73 and 101. Every method used the same test split within a seed.
 
-Report chosen classifier fit time, accumulated preprocessing, search wall time and batched test prediction time separately. Optional map rendering/prediction, I/O and plot generation are outside those timing fields. Training covariance decompositions and spatial caches are reused, so preprocessing timing depends on execution order; it is not a cold-run algorithm benchmark. Winning spatial-cache reconstruction is outside prediction timing. No measured runtime or compression ratio is claimed yet; feature counts will come from selected configurations rather than assumed nominal counts.
+
+| Method | Accuracy (%) | Macro-F1 (%) | Features (mean) | Runs |
+|---|---|---|---|---|
+| E0 Majority | 32.785 ± 0.000 | 5.487 ± 0.000 | 1.0 | 5/5 |
+| E1 Full-spectrum SVM | 96.967 ± 0.189 | 93.243 ± 0.362 | 270.0 | 5/5 |
+| E2 PCA-SVM | 97.200 ± 0.263 | 94.026 ± 0.444 | 50.0 | 5/5 |
+| E3 MNF-SVM | 98.384 ± 0.270 | 96.665 ± 0.365 | 20.0 | 5/5 |
+| E4 Selected-band SVM | 89.825 ± 0.290 | 77.947 ± 0.414 | 6.0 | 5/5 |
+| E5 FRSS-SVM | 97.131 ± 0.201 | 92.936 ± 0.476 | 18.0 | 5/5 |
+| E6 Spatial Random Forest | 95.353 ± 0.148 | 89.254 ± 0.188 | 18.0 | 5/5 |
+
+
+The highest mean macro-F1 is MNF-SVM (96.665%). FRSS-SVM differs from the full-spectrum SVM by +0.164 accuracy points and -0.307 macro-F1 points. These are descriptive comparisons; no significance test or independent geographic validation is claimed.
+
+
+![Figure 1. Five-seed test macro-F1 with sample SD.](figures/macro_f1_comparison.png)
+
+
+## 14. Per-class performance and confusion
+
+
+The following values are five-seed means in percent. Complete precision, recall, F1 and SD for all seven methods are retained in evidence/per_class_summary.csv.
+
+
+| Class | E1 recall | E5 precision | E5 recall | E5 F1 ± SD |
+|---|---|---|---|---|
+| Corn | 99.14 | 99.66 | 98.13 | 98.888 ± 0.271 |
+| Cotton | 96.21 | 93.66 | 96.32 | 94.970 ± 0.393 |
+| Sesame | 98.33 | 80.77 | 98.41 | 88.699 ± 2.013 |
+| Broad-leaf soybean | 92.38 | 99.51 | 93.34 | 96.324 ± 0.255 |
+| Narrow-leaf soybean | 96.30 | 66.57 | 95.43 | 78.417 ± 1.578 |
+| Rice | 99.66 | 99.65 | 99.75 | 99.702 ± 0.103 |
+| Water | 99.92 | 100.00 | 99.95 | 99.975 ± 0.014 |
+| Roads and houses | 95.27 | 94.54 | 97.31 | 95.898 ± 0.354 |
+| Mixed weed | 97.43 | 73.99 | 95.97 | 83.553 ± 1.088 |
+
+
+The lowest mean E5 precisions are Narrow-leaf soybean: 66.57% precision versus 95.43% recall; Mixed weed: 73.99% precision versus 95.97% recall. High recall does not imply few false positives. Errors from a large class can noticeably lower a smaller class's precision, which helps explain the gap between overall accuracy and macro-F1.
+
+
+
+The largest pooled directed E5 errors are Broad-leaf soybean → Narrow-leaf soybean (1292 predictions); Broad-leaf soybean → Mixed weed (850 predictions); Broad-leaf soybean → Sesame (489 predictions). These counts pool repeated split evaluations, so a scene pixel can contribute more than once. They are not counts of independent pixels across scenes.
+
+
+![Figure 2. FRSS-SVM held-out confusion matrix for the predeclared display seed 7; annotations are row percentages.](figures/E5_confusion_normalized.png)
+
+
+![Figure 3. Ground truth and FRSS-SVM descriptive map, seed 7. The full map includes training pixels; only held-out predictions determine reported metrics.](figures/E5_comparison.png)
+
+
+![Figure 4. FRSS-SVM errors on held-out test pixels only, seed 7.](figures/E5_test_errors.png)
+
+
+## 15. Paired ablation and selected representations
+
+
+Differences are proposed minus baseline, in percentage points. Each pair shares the seed and exact split digest.
+
+
+| Comparison | Accuracy difference ± SD | Macro-F1 difference ± SD |
+|---|---|---|
+| E4-E1 | -7.142 ± 0.463 | -15.297 ± 0.738 |
+| E5-E1 | 0.164 ± 0.330 | -0.307 ± 0.749 |
+| E5-E4 | 7.307 ± 0.198 | 14.990 ± 0.246 |
+
+
+Adding local mean/std features to the selected-band family changes macro-F1 by +14.990 ± 0.246 percentage points. Against the full-spectrum SVM the change is -0.307 points, with 93.33% fewer classifier input features on average. Thus recovery of information lost by aggressive band pruning should be distinguished from improvement over all-band classification.
+
+
+
+| Seed | E2 PCA | E3 MNF | E4 bands | E5 features | E6 features |
+|---|---|---|---|---|---|
+| 7 | 50 | 20 | 6 | 18 | 18 |
+| 19 | 50 | 20 | 6 | 18 | 18 |
+| 42 | 50 | 20 | 6 | 18 | 18 |
+| 73 | 50 | 20 | 6 | 18 | 18 |
+| 101 | 50 | 20 | 6 | 18 | 18 |
+
+
+E5/E6 feature counts include raw bands, means and standard deviations, so their band counts are one third of the displayed count. Strict correlation pruning may leave fewer bands than the smallest nominal request; in that case the predeclared fallback uses all retained bands. This is not a post-test hyperparameter change. Every chosen parameter and zero/one-based band index is recorded in evidence/pixel/. E4/E5 searches tune counts independently, so the ablation compares tuned families rather than an enforced fixed-band intervention.
+
+
+![Figure 5. Training-only Fisher scores and selected bands for FRSS-SVM, seed 7.](figures/E5_fisher.png)
+
+
+## 16. Runtime and dimensionality
+
+
+Times are seconds, mean ± sample SD. Selected fit is one winning classifier fit; search includes all candidate fits and validation predictions.
+
+
+| Method | Selected fit | Preprocessing | Search | Test prediction |
+|---|---|---|---|---|
+| E0 | 0.028 ± 0.028 | 0.012 ± 0.010 | 0.163 ± 0.215 | 0.110 ± 0.218 |
+| E1 | 5.094 ± 1.461 | 0.184 ± 0.158 | 137.535 ± 46.324 | 17.140 ± 5.372 |
+| E2 | 3.938 ± 1.528 | 1.134 ± 0.635 | 122.777 ± 49.886 | 12.754 ± 6.219 |
+| E3 | 1.505 ± 0.763 | 0.802 ± 0.366 | 73.429 ± 25.890 | 3.620 ± 1.729 |
+| E4 | 1.308 ± 0.373 | 0.266 ± 0.147 | 45.328 ± 18.843 | 5.955 ± 2.645 |
+| E5 | 0.905 ± 0.499 | 0.267 ± 0.143 | 28.835 ± 11.275 | 3.626 ± 1.720 |
+| E6 | 27.876 ± 13.368 | 0.039 ± 0.067 | 200.828 ± 374.086 | 0.903 ± 0.254 |
+
+
+Caches reuse decompositions and spatial representations. Preprocessing therefore depends on execution order and is not a cold-start benchmark. Test prediction includes batched transformations but excludes reconstruction of the winning spatial cache. Plotting, disk I/O and full-scene maps are excluded. The computer was also used for documentation and verification, so wall times should be treated as practical observations rather than controlled hardware benchmarks.
+
 
 ## 17. Limitations and threats to validity
 
-One scene cannot establish robustness to a new sensor, season or region. Spatially correlated pixel splits can produce optimistic values; contextual measurements shared across partitions strengthen that concern. Capped, nearly balanced training alters original priors. Small validation grids can miss useful configurations. Noise differences assume local signal smoothness and approximate independent noise, which may fail at crop boundaries. Spatial statistics may blur small objects. Repeated split test sets overlap, so seed variation measures split sensitivity rather than independent-scene uncertainty. A fully trained end-to-end run and MATLAB execution remain unverified. The course's public repository requirement must be checked after publishing; a configured Git remote alone does not prove public access.
 
-## 18. Conclusion and future work
+This is a transductive same-scene experiment. Random-pixel neighbours can share measurements across partitions, and geographic autocorrelation can inflate accuracy. Training-only fitting prevents statistical-transform leakage, but does not make spatially neighbouring test pixels geographically independent. The block protocol failed class coverage on three predeclared seeds; no geographic robustness result is claimed. Repeated test sets overlap. Five-run SD captures split sensitivity, not independent-scene uncertainty. The nearly balanced training cap alters class priors. Local noise differences may include signal edges; spatial statistics can blur boundaries. The small validation grid may miss useful settings. The proposed method combines established algorithms and does not introduce a new SVM optimization objective.
 
-The code implements a reproducible comparison of classical hyperspectral feature methods and validates the actual data structure. This establishes software readiness for experimentation, not evidence of classification improvement. The next scientific step is explicitly authorized CPU training, followed by five-seed analysis and careful interpretation of block-protocol feasibility. Future extensions can examine fixed-band ablations, alternate neighbourhood sizes selected on validation data, calibrated sensor-noise models and an independent scene.
+
+## 18. Conclusion
+
+
+All 35 method/seed evaluations completed and passed independent prediction-based checks. FRSS-SVM achieved 97.131 ± 0.201% accuracy and 92.936 ± 0.476% macro-F1. Relative to the full-spectrum SVM, its macro-F1 changed by -0.307 percentage points while using 18.0 features on average versus 270. The best observed mean macro-F1 belongs to MNF-SVM. Future work should predeclare a class-covering geographic split, use an independent scene, and compare matched-band spatial ablations.
+
 
 ## 19. Verified references
 
@@ -141,12 +237,35 @@ The code implements a reproducible comparison of classical hyperspectral feature
 4. A. A. Green, M. Berman, P. Switzer and M. D. Craig. *A Transformation for Ordering Multispectral Data in Terms of Image Quality with Implications for Noise Removal*. IEEE Transactions on Geoscience and Remote Sensing, 1988. [Publisher record, DOI 10.1109/36.3001](https://doi.org/10.1109/36.3001); [indexed original paper scan](https://citeseerx.ist.psu.edu/document?doi=6ae00ebd3a91c0667c79c39035b5163025bcfcad&repid=rep1&type=pdf). Title/authors/year were verified in the indexed original-paper excerpt; the publisher full text and scan fetch were inaccessible in this environment.
 5. L. Breiman. *Random Forests*. Machine Learning, 2001. [Author-hosted original paper](https://www.stat.berkeley.edu/users/breiman/randomforest2001.pdf).
 
-These references establish method origins; none establishes the unmeasured performance of this proposed combination. No unverified DOI or accuracy claim is added.
+These references establish method origins; the performance reported above comes solely from this project's saved experiments. No unverified DOI or accuracy claim is added.
 
-## 20. Appendix: contributions and reproducibility
 
-Complete [individual_contributions.md](individual_contributions.md) using actual team members and evidence. Do not assign authorship based on this template.
 
-Repository configured in Git: [project repository](https://github.com/himanshu09120/Spectral-Spatial-Feature-Selection-for-Hyperspectral-Land-Cover-Classification-Using-an-Enhanced-SVM). Public accessibility and final commit hash: **pending publication/verification**.
 
-Reproduction starts with the official downloader, environment setup and non-training checks in `README.md`. A future experiment is explicitly started with `.venv/bin/python -m src.main --run --allow-training`. MATLAB users enable training in configuration before `Main`; `Main('validate-data')` performs inspection only. Retain the run manifest, split indices, selection audits and raw metrics with the final submission. The present handoff records zero trained classifiers and no measured classification outcomes.
+
+
+
+## 20. Contributions and reproducibility appendix
+
+
+
+The team requests an equal (50% / 50%) contribution allocation. The responsibilities below record that allocation; they do not claim separate commit authorship or independently logged execution by each member. Both members share responsibility for reviewing and explaining the complete submission.
+
+| Team member | Roll number | Share | Allocated responsibilities |
+|---|---|---|---|
+| Himanshu Sinha | S20240020290 | 50% | Problem formulation and related work; Fisher ranking and correlation pruning; spectral/spatial SVM methodology; baseline and ablation interpretation; methodology and discussion sections of the report; joint presentation and final review. |
+| Ghule Yash Mahesh | S20240020288 | 50% | Dataset provenance and validation; train/validation/test protocol and leakage checks; PCA/MNF and Random Forest comparisons; metric auditing, plots and reproducibility; experimental-results and implementation documentation; joint presentation and final review. |
+
+Shared evidence: the implementation modules in `src/`, the regression suite in `tests/`, the experiment manifest, per-seed configuration audits, independent `audit.json`, and the implementation log. These artifacts establish what the project executed; they do not establish individual human authorship.
+
+AI assistance disclosure: Codex assisted with repository review, implementation, automated verification, experiment execution, and drafting the report. Claude Code (Sonnet 5) assisted with resuming and completing the five-seed training run, diagnosing and repairing a concurrent-process artifact from an interrupted run, independent auditing, and generating the final measured report and PDF. Team members should review the code, measured results, interpretation and assigned contribution statements before submission and follow the course's disclosure rules.
+
+
+
+The project repository was verified publicly accessible on 2 November 2026: [source repository](https://github.com/himanshu09120/Spectral-Spatial-Feature-Selection-for-Hyperspectral-Land-Cover-Classification-Using-an-Enhanced-SVM). This local completion has not been pushed; the remote may still contain the earlier version.
+
+
+From a prepared Python 3.12 environment, run `python scripts/download_data.py`, then `python -m src.main --run --allow-training`. In MATLAB, `Main` starts the complete pipeline and displays summary tables and figures. Exact matching completed runs resume without retraining. A source/configuration mismatch requires a fresh output directory.
+
+
+Run fingerprint: `58f8e5ab00fe15cd0179328ae11b7572fce15e3f9eee8fd23e1ddad0142f824b`. The portable report/evidence bundle retains the manifest, independently verified audit, all per-seed metrics, configuration selections, band indices, class summaries and paired ablations. Large model files and pixel arrays remain under ignored outputs/. The report can be regenerated with `python scripts/finalize_report.py`, then `python scripts/render_report.py`.

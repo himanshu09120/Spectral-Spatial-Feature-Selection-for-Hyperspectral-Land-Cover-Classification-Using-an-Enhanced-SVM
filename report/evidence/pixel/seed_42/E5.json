@@ -1,0 +1,225 @@
+{
+  "accuracy": 0.9684831497294831,
+  "macro_precision": 0.8918606313291413,
+  "macro_recall": 0.9695518623476054,
+  "macro_f1": 0.9244190032965088,
+  "confusion_matrix": [
+    [
+      5059,
+      0,
+      2,
+      10,
+      0,
+      5,
+      0,
+      2,
+      99
+    ],
+    [
+      0,
+      1203,
+      4,
+      4,
+      39,
+      0,
+      0,
+      6,
+      0
+    ],
+    [
+      0,
+      2,
+      447,
+      3,
+      1,
+      0,
+      0,
+      0,
+      1
+    ],
+    [
+      17,
+      61,
+      93,
+      8789,
+      286,
+      2,
+      0,
+      53,
+      181
+    ],
+    [
+      0,
+      14,
+      2,
+      7,
+      592,
+      0,
+      0,
+      6,
+      1
+    ],
+    [
+      0,
+      0,
+      0,
+      0,
+      0,
+      1775,
+      0,
+      2,
+      1
+    ],
+    [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      10058,
+      0,
+      1
+    ],
+    [
+      0,
+      6,
+      0,
+      10,
+      5,
+      0,
+      0,
+      1044,
+      4
+    ],
+    [
+      11,
+      1,
+      2,
+      14,
+      2,
+      0,
+      0,
+      7,
+      748
+    ]
+  ],
+  "per_class": [
+    {
+      "class_id": 1,
+      "class_name": "Corn",
+      "precision": 0.9944957735403971,
+      "recall": 0.9772068765694417,
+      "f1": 0.9857755261106781,
+      "support": 5177
+    },
+    {
+      "class_id": 2,
+      "class_name": "Cotton",
+      "precision": 0.9347319347319347,
+      "recall": 0.9578025477707006,
+      "f1": 0.9461266220998821,
+      "support": 1256
+    },
+    {
+      "class_id": 3,
+      "class_name": "Sesame",
+      "precision": 0.8127272727272727,
+      "recall": 0.9845814977973568,
+      "f1": 0.8904382470119522,
+      "support": 454
+    },
+    {
+      "class_id": 4,
+      "class_name": "Broad-leaf soybean",
+      "precision": 0.9945682924069255,
+      "recall": 0.9269141531322506,
+      "f1": 0.9595501937878705,
+      "support": 9482
+    },
+    {
+      "class_id": 5,
+      "class_name": "Narrow-leaf soybean",
+      "precision": 0.64,
+      "recall": 0.9517684887459807,
+      "f1": 0.7653522947640594,
+      "support": 622
+    },
+    {
+      "class_id": 6,
+      "class_name": "Rice",
+      "precision": 0.9960718294051627,
+      "recall": 0.9983127109111362,
+      "f1": 0.9971910112359551,
+      "support": 1778
+    },
+    {
+      "class_id": 7,
+      "class_name": "Water",
+      "precision": 1.0,
+      "recall": 0.9999005865394175,
+      "f1": 0.9999502907988269,
+      "support": 10059
+    },
+    {
+      "class_id": 8,
+      "class_name": "Roads and houses",
+      "precision": 0.9321428571428572,
+      "recall": 0.9766136576239476,
+      "f1": 0.9538602101416171,
+      "support": 1069
+    },
+    {
+      "class_id": 9,
+      "class_name": "Mixed weed",
+      "precision": 0.722007722007722,
+      "recall": 0.9528662420382166,
+      "f1": 0.8215266337177375,
+      "support": 785
+    }
+  ],
+  "protocol": "pixel",
+  "seed": 42,
+  "method": "E5",
+  "fingerprint": "58f8e5ab00fe15cd0179328ae11b7572fce15e3f9eee8fd23e1ddad0142f824b",
+  "split_digest": "748954c91dd61178d80a06514198a73a8e506b6bfba9b6d5d93f876369b09944",
+  "feature_count": 18,
+  "preprocessing_seconds": 0.4929945999992924,
+  "search_seconds": 41.9187179999999,
+  "fit_seconds": 1.6984472000003734,
+  "prediction_seconds": 5.510588799999823,
+  "validation_macro_f1": 0.9245434427418316,
+  "selected_configuration": {
+    "protocol": "pixel",
+    "seed": 42,
+    "method": "E5",
+    "requested_count": 6,
+    "feature_count": 18,
+    "parameters": {
+      "C": 10.0,
+      "gamma": "scale"
+    },
+    "validation_macro_f1": 0.9245434427418316,
+    "fit_seconds": 1.6984472000003734
+  },
+  "selected_bands_zero_based": [
+    145,
+    269,
+    141,
+    138,
+    134,
+    0
+  ],
+  "training_counts": {
+    "1": 1000,
+    "2": 1000,
+    "3": 1000,
+    "4": 1000,
+    "5": 1000,
+    "6": 1000,
+    "7": 1000,
+    "8": 1000,
+    "9": 1000
+  },
+  "majority_uses_uncapped_training_priors": false
+}

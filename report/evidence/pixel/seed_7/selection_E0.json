@@ -1,0 +1,12 @@
+[
+  {
+    "protocol": "pixel",
+    "seed": 7,
+    "method": "E0",
+    "requested_count": 1,
+    "feature_count": 1,
+    "parameters": {},
+    "validation_macro_f1": 0.05486416237784705,
+    "fit_seconds": 0.07744610000008834
+  }
+]

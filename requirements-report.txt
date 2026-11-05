@@ -1,0 +1,3 @@
+# Optional PDF report export; core experiments use requirements.txt.
+reportlab>=4,<6
+pypdf>=5,<7

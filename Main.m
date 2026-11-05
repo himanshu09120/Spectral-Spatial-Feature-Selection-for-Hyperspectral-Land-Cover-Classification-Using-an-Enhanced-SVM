@@ -1,7 +1,7 @@
 function Main(mode)
 %MAIN Portable MATLAB launcher. Main('validate-data') performs no training.
 % Set FRSS_PYTHON to an absolute interpreter path if not using project .venv.
-% Training is disabled in config/config.json until explicitly enabled there.
+% Main explicitly starts the full experiment; other modes never train.
     if nargin < 1
         mode = 'run';
     end
@@ -42,9 +42,41 @@ function Main(mode)
     end
     command = [shellQuote(interpreter) ' ' shellQuote(entryPoint) ' --config ' ...
                shellQuote(fullfile(root, 'config', 'config.json')) ' --' mode];
+    if strcmp(mode, 'run')
+        command = [command ' --allow-training'];
+    end
     [status, output] = system(command, '-echo');
     if status ~= 0
         error('FRSS:PythonFailed', 'Python exited with status %d.\n%s', status, output);
+    end
+    if strcmp(mode, 'run')
+        settings = jsondecode(fileread(fullfile(root, 'config', 'config.json')));
+        resultRoot = fullfile(root, settings.output_dir);
+        disp(readtable(fullfile(resultRoot, 'metrics', 'summary.csv')));
+        disp(readtable(fullfile(resultRoot, 'metrics', 'per_class_summary.csv')));
+        for index = 1:numel(settings.protocols)
+            protocol = settings.protocols{index};
+            images = {'accuracy_comparison.png', 'macro_f1_comparison.png', ...
+                      'runtime_vs_features.png'};
+            for imageIndex = 1:numel(images)
+                imagePath = fullfile(resultRoot, 'figures', protocol, images{imageIndex});
+                figure('Name', [protocol ' - ' images{imageIndex}], 'NumberTitle', 'off');
+                image(imread(imagePath)); axis image off;
+            end
+            if ~isempty(settings.execution.map_seeds)
+                mapSeed = settings.execution.map_seeds(1);
+                detailImages = {'E1_confusion_normalized.png', 'E5_confusion_normalized.png', 'E5_comparison.png'};
+                for imageIndex = 1:numel(detailImages)
+                    imagePath = fullfile(resultRoot, 'figures', protocol, ...
+                        sprintf('seed_%d', mapSeed), detailImages{imageIndex});
+                    if isfile(imagePath)
+                        figure('Name', detailImages{imageIndex}, 'NumberTitle', 'off');
+                        image(imread(imagePath)); axis image off;
+                    end
+                end
+            end
+        end
+        fprintf('All metrics, confusion matrices and maps: %s\n', resultRoot);
     end
 end
 
