@@ -1,4 +1,10 @@
-"""Build the empirical report and portable evidence bundle after a complete audit."""
+"""Build the empirical report and evidence bundle after a complete audit.
+
+Requires the original default outputs/ tree, including split indices and test
+predictions, in a matching execution environment. The committed report/evidence/
+bundle alone cannot repeat that audit. Generates the Markdown report and slide
+outline; PDF rendering is separate and PowerPoint export is not implemented here.
+"""
 from pathlib import Path
 import hashlib
 import json
@@ -48,9 +54,15 @@ def main():
         intro = intro.replace("**Pattern Recognition semester project — deadline: 5 November 2026.**",
             "**Pattern Recognition semester project — deadline: 5 November 2026.**\n\n"
             "**Himanshu Sinha — S20240020290**\n\n**Ghule Yash Mahesh — S20240020288**")
-    start = intro.index("**Status as of")
+    status_marker = "**Execution status:**" if "**Execution status:**" in intro else "**Status as of"
+    start = intro.index(status_marker)
     end = intro.index("## 1.")
-    intro = intro[:start] + "**Status as of 3 November 2026:** all seven methods completed on all five predeclared seeds. Real held-out predictions were independently audited. Results are for a transductive, same-scene random-pixel protocol.\n\n" + intro[end:]
+    intro = intro[:start] + (
+        "**Execution status:** all seven methods completed on all five predeclared seeds. "
+        f"The independent audit reports PASS for {verification['completed_method_seed_results']} evaluations "
+        f"and {verification['candidate_fits']} candidate fits. Results are for a transductive, "
+        "same-scene random-pixel protocol. The experiment environment is recorded in the manifest.\n\n"
+    ) + intro[end:]
     abstract_start, abstract_end = intro.index("## 1."), intro.index("## 2.")
     abstract = ("## 1. Abstract\n\n"
                 "This study evaluates classical spectral and spatial features for nine-class land-cover recognition on "
@@ -69,12 +81,14 @@ def main():
     old_start = intro.index(budget_marker)
     old_end = intro.index("## 11.")
     intro = intro[:old_start] + (f"The predeclared upper budget is 305 candidate fits. Strict feature feasibility reduced the actual search to "
-                f"{verification['candidate_fits']} fits, all completed. One worker, bounded BLAS threads, a 256-MB "
+                f"{verification['candidate_fits']} fits, all completed. A 256-MB "
                 "SVM cache and 4,096-row prediction batches constrain resources. Four bounded workers predict independent batches; "
                 "classifier fitting and BLAS remain at one thread. Serial/parallel prediction equality was regression tested. The measured environment is "
                 "Windows, Python 3.12.5, Intel Core i5-12450H, approximately 16 GB RAM; GPU acceleration was not used. "
-                "Exact dependencies, source hashes, dataset hashes and configuration are preserved in "
-                "report/evidence/manifest.json and requirements-windows-lock.txt.\n\n") + intro[old_end:]
+                "Exact dependencies, the run fingerprint, dataset hashes and configuration are preserved in "
+                "report/evidence/manifest.json and requirements-windows-lock.txt. The fingerprint incorporates source bytes; "
+                "the manifest does not list individual source-file hashes. The earlier macOS environment in "
+                "requirements-lock.txt is a separate implementation environment.\n\n") + intro[old_end:]
     intro = intro.replace("This protocol is coded but has not been evaluated on the real scene; random-pixel findings must not be described as independent geographic generalization.",
                 "A preflight check on the real scene found missing validation classes for seeds 7, 19 and 73; seeds 42 and 101 were feasible. No block classifiers were trained, and seeds were not replaced or selectively reported. Thus no complete five-seed spatial sensitivity claim is possible with this predefined block design. Random-pixel findings must not be described as independent geographic generalization. Details are in report/evidence/protocol_feasibility.json.")
     rows = [[m + " " + METHODS[m], pm(r.accuracy_mean, r.accuracy_std),
@@ -164,16 +178,25 @@ def main():
     sections.append("## 19." + references)
     contributions = (report / "individual_contributions.md").read_text(encoding="utf-8")
     sections += ["## 20. Contributions and reproducibility appendix\n", contributions.split("\n", 1)[1],
-                 "\nThe project repository was verified publicly accessible on 2 November 2026: "
+                 "\nProject source: "
                  "[source repository](https://github.com/himanshu09120/Spectral-Spatial-Feature-Selection-for-Hyperspectral-Land-Cover-Classification-Using-an-Enhanced-SVM). "
-                 "This local completion has not been pushed; the remote may still contain the earlier version.\n",
-                 "From a prepared Python 3.12 environment, run `python scripts/download_data.py`, then "
+                 "The completed study is preserved in the version-controlled report/evidence and report/figures directories. "
+                 "Local commit history does not establish the current remote publication or submission status.\n",
+                 "For future reproduction from a prepared Python environment, use `python scripts/download_data.py`, then "
                  "`python -m src.main --run --allow-training`. In MATLAB, `Main` starts the complete pipeline and displays summary tables and figures. "
-                 "Exact matching completed runs resume without retraining. A source/configuration mismatch requires a fresh output directory.\n",
+                 "Exact matching completed outputs resume without retraining; source, configuration, dataset or Python/package incompatibility "
+                 "requires a fresh output directory. The committed evidence alone is not a resumable experiment.\n",
                  f"Run fingerprint: `{manifest['fingerprint']}`. "
-                 "The portable report/evidence bundle retains the manifest, independently verified audit, all per-seed metrics, configuration selections, "
-                 "band indices, class summaries and paired ablations. Large model files and pixel arrays remain under ignored outputs/. "
-                 "The report can be regenerated with `python scripts/finalize_report.py`, then `python scripts/render_report.py`.\n"]
+                 "The report/evidence bundle retains the manifest, saved independent audit, all per-seed metrics, configuration selections, "
+                 "band indices, class summaries and paired ablations. Large model files, split indices and pixel prediction arrays remain under "
+                 "ignored outputs/ on the experiment device. They are not included in a source checkout.\n",
+                 "`python scripts/finalize_report.py` requires the full original outputs/ tree and a compatible execution fingerprint to repeat "
+                 "the audit and regenerate the empirical report, evidence and slide outline. `python scripts/render_report.py` requires the "
+                 "Markdown report, committed figures and optional requirements-report.txt dependencies to export the PDF. It does not require "
+                 "model fitting. Existing PDF and PowerPoint exports are not updated by editing Markdown or running the finalizer; the "
+                 "finalizer does not generate the PowerPoint.\n",
+                 "SHA256SUMS.json describes the exact exported bytes. Git's CRLF/LF conversion can change text-file byte hashes without "
+                 "changing recorded metric values. Preserve the original export when checking those hashes.\n"]
     evidence = report / "evidence"
     evidence.mkdir(exist_ok=True)
     for name in ["manifest.json", "audit.json", "data_validation.json", "protocol_feasibility.json"]:
@@ -193,15 +216,15 @@ def main():
     presentation = f"""# Eight-slide presentation with measured talking points
 
 1. **Problem and objective.** Nine-class agricultural land-cover mapping from hyperspectral imagery. Explain spectral redundancy and the motivation for local spatial context. Presenters: Himanshu Sinha (S20240020290) and Ghule Yash Mahesh (S20240020288).
-2. **Dataset.** WHU-Hi-LongKou: 550 × 400 × 270, 204,542 labelled pixels, nine classes. Label 0 is excluded. Show `outputs/figures/dataset/ground_truth.png` and the observed class counts. Source: https://rsidea.whu.edu.cn/e-resource_WHUHi_sharing.htm.
+2. **Dataset.** WHU-Hi-LongKou: 550 × 400 × 270, 204,542 labelled pixels, nine classes. Label 0 is excluded. Show the ground-truth panel in the committed `report/figures/E5_comparison.png` and the observed class counts in report Section 6. Source: https://rsidea.whu.edu.cn/e-resource_WHUHi_sharing.htm.
 3. **Evaluation design.** Five fixed seeds; stratified 70/15/15 pool/validation/test; 9,000 common fitting pixels per seed; 30,682 held-out test pixels. Fit transformations on training only; select by validation macro-F1; score test after selection.
-4. **Methods.** E0 majority; E1 full-spectrum SVM; E2 PCA-SVM; E3 MNF-SVM; E4 Fisher/correlation-selected SVM; E5 selected raw/mean/std FRSS-SVM; E6 spatial Random Forest. Explain the strict-pruning fallback using the actual counts in report Section 15.
+4. **Methods.** E0 majority; E1 full-spectrum SVM; E2 PCA-SVM; E3 MNF-SVM; E4 Fisher/correlation-selected SVM; E5 selected raw/mean/std FRSS-SVM; E6 spatial Random Forest. Explain the strict-pruning fallback using the actual band and feature counts in report Section 15. The completed search contains {verification['candidate_fits']} candidate fits and {verification['completed_method_seed_results']} test evaluations.
 5. **Overall results.** FRSS-SVM accuracy: {pm(e5.accuracy_mean, e5.accuracy_std)}%; macro-F1: {pm(e5.macro_f1_mean, e5.macro_f1_std)}%. Show `report/figures/macro_f1_comparison.png`. Highest observed mean macro-F1: {METHODS[best]}. Do not claim every proposed method beats every baseline.
-6. **Ablation and cost.** E5 minus E1: {delta_f1:+.3f} macro-F1 percentage points and {delta_oa:+.3f} accuracy points. E5 uses {e5.feature_count_mean:.1f} features on average. Use the paired ablation table and `report/figures/runtime_vs_features.png`; distinguish search time from winning-fit time.
+6. **Ablation and cost.** E5 minus E4: {100 * spatial_delta.mean():+.3f} ± {100 * spatial_delta.std():.3f} macro-F1 percentage points. E5 minus E1: {delta_f1:+.3f} macro-F1 points and {delta_oa:+.3f} accuracy points. E5 uses {e5.feature_count_mean:.1f} features versus {e1.feature_count_mean:.0f} for E1. Use the paired ablation table and `report/figures/runtime_vs_features.png`; distinguish search time from winning-fit time.
 7. **Class errors and maps.** Show `report/figures/E5_confusion_normalized.png` and `report/figures/E5_comparison.png`. Discuss the largest directed errors listed in report Section 14. The complete map includes training pixels and is descriptive; test errors are separately masked.
 8. **Conclusion, limitations and contributions.** Same-scene random pixels share contextual measurements; three planned block splits lacked validation classes. No independent-region claim. Equal contribution allocation is recorded in the appendix, with AI assistance disclosed. Provide the repository link and explain reproduction through `Main` or the Python CLI.
 
-All numerical talking points derive from the audited run. See `report/final_report.md` for full references, exact metrics, definitions and limitations.
+All numerical talking points derive from the saved, audited run. See `report/final_report.md` for full references, exact metrics, definitions and limitations. The committed evidence and figures can be presented without executing experiments. `report/presentation.pptx` is a saved export; updating this outline does not regenerate the PowerPoint.
 """
     (report / "presentation_outline.md").write_text(presentation, encoding="utf-8")
     files = {str(p.relative_to(report)).replace("\\", "/"): hashlib.sha256(p.read_bytes()).hexdigest()

@@ -21,6 +21,12 @@ Matlab_data_format/WHU-Hi-LongKou/WHU_Hi_LongKou_gt.mat
 
 Place these directly in `data/raw/`. Do not use the archive's preselected Train/Test maps: this project creates its own documented splits. Do not substitute another scene or combine a cube and labels with inconsistent orientation.
 
-Actual inspection in this workspace found variables `WHU_Hi_LongKou` (550×400×270) and `WHU_Hi_LongKou_gt` (550×400). There are 204,542 labelled and 15,458 unlabelled pixels. All class counts match the official table. Run `.venv/bin/python -m src.main --validate-data` to repeat inspection without any training. The loader converts scene measurements to float32 after validation; labels become int16.
+The recorded dataset inspection found variables `WHU_Hi_LongKou` (550×400×270) and `WHU_Hi_LongKou_gt` (550×400). There are 204,542 labelled and 15,458 unlabelled pixels. All class counts match the official table. For a future inspection, `.venv/bin/python -m src.main --validate-data` validates the files without training. The loader converts scene measurements to float32 after validation; labels become int16.
 
 `DATASET_VALIDATION.json` records the inspection. `DOWNLOAD_PROVENANCE.json` records source URLs, actual archive entries, sizes and SHA256 hashes; it is an integrity record, not a signed publisher checksum. Raw files and the downloader's local manifest are excluded from Git. Use the dataset according to the publisher's terms and cite the original authors; this repository does not grant a new dataset license.
+
+## Use in the completed study
+
+The five-seed research run completed on a separate Windows device using the dataset hashes recorded in [the experiment manifest](../report/evidence/manifest.json). Its [saved validation](../report/evidence/data_validation.json) and [protocol preflight](../report/evidence/protocol_feasibility.json) are committed with the report. Every pixel split had 143,179 training-pool, 30,681 validation and 30,682 test pixels; E1–E6 shared a capped fitting subset of 9,000 pixels. All five pixel splits were feasible. The block protocol lacked validation classes for seeds 7, 19 and 73, and no block classifiers were trained.
+
+The 5 November documentation update uses those saved records. Dataset files alone do not reproduce the original outputs: split arrays, predictions and fitted models are stored separately in the experiment device's ignored `outputs/` directory. Read the committed report and evidence to review the completed results without running anything.

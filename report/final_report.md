@@ -6,7 +6,7 @@
 
 **Ghule Yash Mahesh — S20240020288**
 
-**Status as of 3 November 2026:** all seven methods completed on all five predeclared seeds. Real held-out predictions were independently audited. Results are for a transductive, same-scene random-pixel protocol.
+**Execution status:** all seven methods completed on all five predeclared seeds on the Windows experiment device. The saved independent audit reports PASS for 35 evaluations and 155 candidate fits. Results are for a transductive, same-scene random-pixel protocol; documentation updates use these recorded measurements.
 
 ## 1. Abstract
 
@@ -75,11 +75,11 @@ For binary SVM subproblems, the soft-margin objective is ½||w||²+CΣ_i ξ_i su
 
 ## 9. Proposed FRSS-SVM
 
-For each selected band, compute a 3×3 reflected-border local mean m and population standard deviation s. Concatenate z=[x,m,s], giving 3k features for k bands; 30 bands produce 90 features. Statistics are computed only for selected bands. Variance uses double-precision accumulation with roundoff negatives clamped to zero before square roots. Train-only scaling precedes the same RBF-SVM family used in the principal baseline.
+For each selected band, compute a 3×3 reflected-border local mean m and population standard deviation s. Concatenate z=[x,m,s], giving 3k features for k bands. In the completed run, strict correlation pruning retained six bands in every seed, producing 18 classifier inputs. Statistics are computed only for selected bands. Variance uses double-precision accumulation with roundoff negatives clamped to zero before square roots. Train-only scaling precedes the same RBF-SVM family used in the principal baseline.
 
 ## 10. Experimental setup and hyperparameters
 
-| Method | Feature candidates | Model candidates |
+| Method | Nominal feature candidates | Model candidates |
 |---|---|---|
 | E0 | Majority prior, no informative features | Dummy most frequent |
 | E1 | All bands | RBF SVM |
@@ -89,9 +89,9 @@ For each selected band, compute a 3×3 reflected-border local mean m and populat
 | E5 | Selected bands with mean/std: 45, 90, 135, 180 features | RBF SVM |
 | E6 | Same spatial feature candidate family | RF: 100, 200 trees |
 
-SVM uses C={1,10}, γ={scale,0.01}; RF uses depth≤24 and leaf size≥2. All searches maximize validation macro-F1, with deterministic ties favoring earlier smaller counts. Infeasible dimensions are skipped. If no requested band count survives strict pruning, the entire nonempty pruned set is the predeclared fallback. An optional linear SVM is disabled by default.
+SVM uses C={1,10}, γ={scale,0.01}; RF uses depth≤24 and leaf size≥2. All searches maximize validation macro-F1, with deterministic ties favoring earlier smaller counts. Infeasible dimensions are skipped. If no requested band count survives strict pruning, the entire nonempty pruned set is the predeclared fallback. This occurred in all five seeds: E4 used six bands, and E5/E6 used those six bands with means and standard deviations, for 18 features. An optional linear SVM is disabled by default.
 
-The predeclared upper budget is 305 candidate fits. Strict feature feasibility reduced the actual search to 155 fits, all completed. One worker, bounded BLAS threads, a 256-MB SVM cache and 4,096-row prediction batches constrain resources. Four bounded workers predict independent batches; classifier fitting and BLAS remain at one thread. Serial/parallel prediction equality was regression tested. The measured environment is Windows, Python 3.12.5, Intel Core i5-12450H, approximately 16 GB RAM; GPU acceleration was not used. Exact dependencies, source hashes, dataset hashes and configuration are preserved in report/evidence/manifest.json and requirements-windows-lock.txt.
+The predeclared upper budget is 305 candidate fits. Strict feature feasibility reduced the actual search to 155 fits, all completed. A 256-MB SVM cache and 4,096-row prediction batches constrain resources. Four bounded workers predict independent batches; classifier fitting and BLAS remain at one thread. Serial/parallel prediction equality was regression tested. The measured environment is Windows, Python 3.12.5, Intel Core i5-12450H, approximately 16 GB RAM; GPU acceleration was not used. Exact dependencies, the run fingerprint, dataset hashes and configuration are preserved in report/evidence/manifest.json and requirements-windows-lock.txt. The fingerprint incorporates source bytes; the manifest does not list individual source-file hashes. The earlier macOS environment in requirements-lock.txt is a separate implementation environment.
 
 ## 11. Spatial sensitivity protocol
 
@@ -249,23 +249,26 @@ These references establish method origins; the performance reported above comes 
 
 
 
-The team requests an equal (50% / 50%) contribution allocation. The responsibilities below record that allocation; they do not claim separate commit authorship or independently logged execution by each member. Both members share responsibility for reviewing and explaining the complete submission.
+ The responsibilities below record that allocation; they do not claim separate commit authorship or independently logged execution by each member. Both members share responsibility for reviewing and explaining the complete submission.
 
 | Team member | Roll number | Share | Allocated responsibilities |
 |---|---|---|---|
 | Himanshu Sinha | S20240020290 | 50% | Problem formulation and related work; Fisher ranking and correlation pruning; spectral/spatial SVM methodology; baseline and ablation interpretation; methodology and discussion sections of the report; joint presentation and final review. |
 | Ghule Yash Mahesh | S20240020288 | 50% | Dataset provenance and validation; train/validation/test protocol and leakage checks; PCA/MNF and Random Forest comparisons; metric auditing, plots and reproducibility; experimental-results and implementation documentation; joint presentation and final review. |
 
-Shared evidence: the implementation modules in `src/`, the regression suite in `tests/`, the experiment manifest, per-seed configuration audits, independent `audit.json`, and the implementation log. These artifacts establish what the project executed; they do not establish individual human authorship.
-
-AI assistance disclosure: Codex assisted with repository review, implementation, automated verification, experiment execution, and drafting the report. Claude Code (Sonnet 5) assisted with resuming and completing the five-seed training run, diagnosing and repairing a concurrent-process artifact from an interrupted run, independent auditing, and generating the final measured report and PDF. Team members should review the code, measured results, interpretation and assigned contribution statements before submission and follow the course's disclosure rules.
+Shared evidence: the implementation modules in `src/`, the regression suite in `tests/`, `report/evidence/manifest.json`, the per-seed results and selection audits in `report/evidence/pixel/`, the saved independent `report/evidence/audit.json`, and `IMPLEMENTATION_LOG.md`. The completed Windows run records 35 method/seed evaluations and 155 candidate fits. These artifacts establish the recorded project work; they do not establish individual human authorship. The 5 November documentation update uses these saved results and adds no new research run.
 
 
 
-The project repository was verified publicly accessible on 2 November 2026: [source repository](https://github.com/himanshu09120/Spectral-Spatial-Feature-Selection-for-Hyperspectral-Land-Cover-Classification-Using-an-Enhanced-SVM). This local completion has not been pushed; the remote may still contain the earlier version.
+
+Project source: [source repository](https://github.com/himanshu09120/Spectral-Spatial-Feature-Selection-for-Hyperspectral-Land-Cover-Classification-Using-an-Enhanced-SVM). The completed study is preserved in the version-controlled report/evidence and report/figures directories. Local commit history does not establish the current remote publication or submission status.
 
 
-From a prepared Python 3.12 environment, run `python scripts/download_data.py`, then `python -m src.main --run --allow-training`. In MATLAB, `Main` starts the complete pipeline and displays summary tables and figures. Exact matching completed runs resume without retraining. A source/configuration mismatch requires a fresh output directory.
+For future reproduction from a prepared Python environment, use `python scripts/download_data.py`, then `python -m src.main --run --allow-training`. In MATLAB, `Main` starts the complete pipeline and displays summary tables and figures. Exact matching completed outputs resume without retraining; source, configuration, dataset or Python/package incompatibility requires a fresh output directory. The committed evidence alone is not a resumable experiment. These are reproduction instructions, not commands executed for the documentation update.
 
 
-Run fingerprint: `58f8e5ab00fe15cd0179328ae11b7572fce15e3f9eee8fd23e1ddad0142f824b`. The portable report/evidence bundle retains the manifest, independently verified audit, all per-seed metrics, configuration selections, band indices, class summaries and paired ablations. Large model files and pixel arrays remain under ignored outputs/. The report can be regenerated with `python scripts/finalize_report.py`, then `python scripts/render_report.py`.
+Run fingerprint: `58f8e5ab00fe15cd0179328ae11b7572fce15e3f9eee8fd23e1ddad0142f824b`. The report/evidence bundle retains the manifest, saved independent audit, all per-seed metrics, configuration selections, band indices, class summaries and paired ablations. Large model files, split indices and pixel prediction arrays remain under ignored outputs/ on the experiment device. They are absent from this Mac checkout. The 5 November documentation update preserves the saved measurements and audit; it does not repeat the prediction-based verification.
+
+`python scripts/finalize_report.py` requires the full original outputs/ tree and a compatible execution fingerprint to repeat the audit and regenerate the empirical report, evidence and slide outline. `python scripts/render_report.py` requires the Markdown report, committed figures and optional requirements-report.txt dependencies to export the PDF. It does not require model fitting. The checked-in PDF and PowerPoint are saved exports and were not regenerated for this documentation update; the finalizer does not generate the PowerPoint.
+
+The saved SHA256SUMS.json describes the original Windows export bytes. CRLF-to-LF conversion changes the byte hashes of its 99 text files without changing the recorded metric values; the eight figure hashes are unaffected. The original evidence and checksum record are retained.

@@ -1,4 +1,51 @@
-# Completion work - 3 November 2026
+# Implementation log and project status
+
+## Documentation update — 5 November 2026
+
+The completed research experiments were run on a separate Windows device. This checkout contains the committed report, figures and evidence from that run, introduced in commit `8e01f2a` on 5 November 2026. The owner requested that files be updated from those saved results and explicitly instructed that nothing further be run locally. No new experiment, prediction-based audit or report/PDF generation was performed for this documentation update.
+
+The current status below supersedes pending-work statements in the dated historical entries. Original measurements, selection records, audit results and environment locks remain records of the device on which the experiments ran.
+
+| Item | Current recorded status |
+|---|---|
+| Research evaluation | E0–E6 complete for seeds 7, 19, 42, 73 and 101: 35 evaluations, 155 retained candidate fits |
+| Independent audit | Saved `report/evidence/audit.json` records PASS for all 35 evaluations |
+| FRSS-SVM (E5) | Accuracy 97.131 ± 0.201%; macro-F1 92.936 ± 0.476%; six selected bands / 18 input features per seed |
+| Full-spectrum comparison | E5−E1: +0.164 accuracy points, −0.307 macro-F1 points; 18 versus 270 input features |
+| Spatial-feature ablation | E5−E4: +14.990 ± 0.246 macro-F1 percentage points |
+| Highest observed mean macro-F1 | MNF-SVM (E3): 96.665 ± 0.365% |
+| Protocol feasibility | Pixel splits feasible for all five seeds; block validation coverage fails for 7, 19 and 73; no block classifiers trained |
+| Test suite at completion | 22 tests passed in the recorded completion work |
+| Experiment environment | Windows, Python 3.12.5; recorded in `report/evidence/manifest.json` and `requirements-windows-lock.txt` |
+| MATLAB | `Main('dry-run')` was verified on Windows with R2024b; full MATLAB-launched training is not documented |
+| Report and presentation | Measured Markdown, PDF, eight-slide outline, PowerPoint and report figures are committed |
+| Contributions | Named team members and requested 50/50 allocation are recorded; team review remains necessary |
+| Training default | Python CLI/configuration requires explicit opt-in; plain MATLAB `Main` passes that opt-in |
+
+Changes in this update:
+
+- Updated the README, implementation handoff, dataset notes, report, contribution evidence references and presentation outline to reflect the completed run.
+- Replaced stale claims that results were pending, team identities were missing, or all completion changes were uncommitted. Remote publication status is not inferred from a local commit.
+- Distinguished the Windows research environment from the earlier macOS implementation environment and the current checkout.
+- Updated report-generation wording so future generation does not reintroduce stale publication claims or point presentation readers only to ignored output files.
+- Kept historical no-training restrictions and earlier pending checklists explicitly dated. They describe the initial implementation stage, not the current project status.
+- Retained the saved evidence and binary exports. The PDF and PowerPoint were not regenerated after the Markdown edits, as requested.
+
+Before the owner's clarification, local verification had already finished: the existing 22 unit tests passed, the dry run reported training disabled and a 305-fit upper bound, and a read-only comparison found that the two local dataset hashes match the recorded manifest. These are local software/integrity checks, not a rerun of the research. No further execution followed the clarification.
+
+The same pre-clarification inspection found that all 99 evidence text-file checksum differences are explained by CRLF-to-LF checkout conversion; all eight figure hashes match the saved checksum manifest. The saved Windows checksum record is retained, rather than silently rewritten as a new experimental audit.
+
+### Current handoff
+
+Read `report/final_report.md`, `report/evidence/summary.csv`, `report/evidence/per_class_summary.csv`, `report/evidence/ablation_deltas.csv` and the saved `audit.json` for the completed findings. Review the team allocation and final submission materials. The repository also contains `PR Project Instructions M2026.pdf`, which was read during the 2 November work.
+
+The full Windows `outputs/` tree, including split indices, predictions and models, is ignored by Git and is not present in this Mac checkout. Repeating the prediction-based audit or rebuilding the empirical report requires those original outputs and a compatible execution fingerprint. Reading the committed results requires neither training nor reconstruction. Future PDF rendering can use the committed Markdown and figures, but was not requested for this update.
+
+Remaining scientific work is future work: a predeclared class-covering geographic split, independent-scene evaluation and matched-band ablations. The completed random-pixel study does not establish geographic generalization. Submission, remote publication and team review should be confirmed by the owners; they are not claimed here as completed actions.
+
+---
+
+## Completion work — 3 November 2026 (historical session record)
 
 Continued the 2 November completion work in a new session (Claude Code, Sonnet 5) to finish the remaining real-data training and finalize the submission.
 
@@ -9,11 +56,11 @@ Continued the 2 November completion work in a new session (Claude Code, Sonnet 5
 - Ran `scripts/finalize_report.py` (re-audits, rewrites `report/final_report.md` with measured five-seed statistics, regenerates `report/evidence/` and `report/figures/`) and `scripts/render_report.py` (produces `output/pdf/final_report.pdf`, 10 pages).
 - Measured headline result: FRSS-SVM (E5) achieves 97.131% ± 0.201% accuracy and 92.936% ± 0.476% macro-F1 across five seeds, using 18 features on average versus 270 for the full-spectrum baseline. MNF-SVM (E3) has the highest observed mean macro-F1 (96.665%). Full tables are in `report/final_report.md` Sections 13-16.
 - Updated `report/individual_contributions.md`'s AI-assistance disclosure to credit this session's work (resuming training, diagnosing/repairing the concurrency artifact, auditing, and report/PDF generation) alongside the prior Codex-assisted work.
-- No git commit or push was performed in this session; working tree changes remain local pending the owner's review before submission.
+- No git commit or push was performed during that session. The completion artifacts were subsequently included in commit `8e01f2a` on 5 November; the earlier statement is not the current commit status.
 
 ---
 
-# Completion work - 2 November 2026
+## Completion work — 2 November 2026 (historical session record)
 
 The current owner explicitly authorized full CPU experiments in this session, superseding the historical no-training restriction documented below. The original implementation log is retained as history, not the current execution status.
 
@@ -23,20 +70,22 @@ The current owner explicitly authorized full CPU experiments in this session, su
 - Updated MATLAB `Main` to explicitly enable training for its run mode and display summary/per-class tables, metric charts, confusion matrices and the map. MATLAB R2024b executed `Main('dry-run')` successfully.
 - Serial prediction proved expensive. Preserved the interrupted initial research attempt under `outputs/serial_preflight_20261102/`, verified its PID had stopped, and restarted in a fresh result directory after adding four bounded prediction workers. All statistical choices remain unchanged. Fitting and BLAS remain single-threaded. A new real-classifier regression verifies exact serial/parallel prediction equality; all 22 tests pass.
 - Checked real-data block feasibility without training: seeds 7, 19 and 73 fail validation class coverage; seeds 42 and 101 pass. No seeds or block settings were changed. All five pixel splits contain 143,179 pool / 30,681 validation / 30,682 test pixels; the shared fit subset has 9,000 pixels and 2,163-2,276 eligible MNF noise pairs.
-- Added independent result auditing, reproducible report generation, PDF export, and a portable report evidence bundle. Completion measurements will be recorded after the full run finishes.
-- Public repository accessibility verified. No commit or push has been performed. The owner supplied Himanshu Sinha (S20240020290) and Ghule Yash Mahesh (S20240020288), requesting equal contributions. The appendix records a 50/50 responsibility allocation and explicitly distinguishes allocation from commit-level authorship evidence.
+- Added independent result auditing, reproducible report generation, PDF export, and a portable report evidence bundle. Completion measurements were still pending at the end of that session; the 3 November entry records their completion.
+- Public repository accessibility was verified in that session, which performed no commit or push. The owner supplied Himanshu Sinha (S20240020290) and Ghule Yash Mahesh (S20240020288), requesting equal contributions. The appendix records a 50/50 responsibility allocation and explicitly distinguishes allocation from commit-level authorship evidence.
 
 ---
 
-# Implementation log and handoff
+## Initial implementation — 29 October 2026 (historical record)
 
-## Scope and authorization
+The sections below preserve the original implementation-stage record. Statements about untrained models, pending results, missing course instructions and unavailable MATLAB apply to 29 October only. Training was authorized on 2 November and the measured study was completed on 3 November, as recorded above.
 
-The supplied master prompt requested a complete Pattern Recognition project. The owner's direct instruction overrides its experiment-execution phases: **do not train anything; write the code for a MacBook without a GPU**. A subsequent instruction explicitly requested downloading the linked dataset. Both were followed. No actual DummyClassifier, SVC or RandomForestClassifier has been fitted, on either real or synthetic data. Numerical preprocessing algebra was checked on tiny arrays. The full runner was exercised using a fixed-output, non-learning test stub, with real classifier fitting patched to raise an error.
+### Original scope and authorization
+
+The supplied master prompt requested a complete Pattern Recognition project. At the initial stage, the owner's direct instruction overrode its experiment-execution phases: **do not train anything; write the code for a MacBook without a GPU**. A subsequent instruction explicitly requested downloading the linked dataset. Both were followed. At that stage, no actual DummyClassifier, SVC or RandomForestClassifier had been fitted, on either real or synthetic data. Numerical preprocessing algebra was checked on tiny arrays. The full runner was exercised using a fixed-output, non-learning test stub, with real classifier fitting patched to raise an error.
 
 Git identity requested for any future commit/push: username `himanshu09120`, email `hsinha0912@gmail.com`. No commit, push, branch change or Git identity configuration was performed.
 
-## Initial inspection, 29 October 2026
+### Initial inspection, 29 October 2026
 
 - Workspace: the repository containing this log, under the owner's Desktop.
 - Directory contained only `.git`; no source, configuration, dataset, course PDF, experiments or local instruction files were present.
@@ -46,7 +95,7 @@ Git identity requested for any future commit/push: username `himanshu09120`, ema
 - OS Darwin/macOS ARM64; `/usr/bin/python3` is Python 3.9.6. No MATLAB or Octave executable found. System Python lacked NumPy, SciPy, scikit-learn, Matplotlib, pandas, h5py and pytest.
 - No useful existing files were overwritten or removed. No sub-agents were used.
 
-## Implementation plan and completed code
+### Initial implementation plan and completed code
 
 1. Inspect repository/environment and official dataset access.
 2. Implement robust scene loading, class validation and shared leakage-aware splitting.
@@ -55,9 +104,9 @@ Git identity requested for any future commit/push: username `himanshu09120`, ema
 5. Add safe CLI and MATLAB launcher, tests, report framework and reproduction instructions.
 6. Download and inspect official data; run only non-training verification.
 
-All six implementation steps are complete within the no-training restriction. Scientific experimentation and MATLAB runtime validation remain unperformed, as detailed below.
+All six implementation steps were complete within the initial no-training restriction. Scientific experimentation and MATLAB runtime validation were unperformed at that stage.
 
-## Files created and responsibilities
+### Initial files created and responsibilities
 
 | File | Implemented functionality |
 |---|---|
@@ -93,7 +142,7 @@ All six implementation steps are complete within the no-training restriction. Sc
 
 The `.venv` directory and two local MAT files were also created but are ignored by Git. There are no prior tracked source files to list as modified; all source additions are new.
 
-## Official data acquisition and observations
+### Official data acquisition and observations
 
 The supplied [official resource page](https://rsidea.whu.edu.cn/e-resource_WHUHi_sharing.htm) links its MATLAB download to `https://rsidea-whu-hi.mikecrm.com/MqhjRPN`. The form HTML explicitly publishes the redirect to `http://rsidea.whu.edu.cn/code_data/WHU-Hi/Matlab_data_format.zip`. Its HTTPS equivalent returned HTTP 200, size 900,809,518 bytes and range support. No guessed URL or third-party mirror was used, and no personal information/registration was submitted.
 
@@ -106,7 +155,7 @@ Only the two LongKou MAT entries were downloaded (approximately 186 MB transferr
 
 The actual variables are `WHU_Hi_LongKou` and `WHU_Hi_LongKou_gt`. Observed cube shape is 550×400×270 and label shape 550×400. Label counts 1–9 are 34,511; 8,374; 3,031; 63,212; 4,151; 11,854; 67,056; 7,124; 5,229. There are 204,542 labelled and 15,458 background pixels. Counts match the official table, no classes are missing and validation found no NaN or infinite inputs. In-memory return types are float32 measurements and int16 labels.
 
-## Algorithms and decisions
+### Initial algorithms and decisions
 
 - Pixel splits: stratified 70/15/15, seeds 7,19,42,73,101. A single deterministic capped training subset (≤1,000/class) is reused by all E1–E6 candidates. Unused training-pool pixels are never reassigned to evaluation.
 - E0 majority uses the original training-pool priors, explicitly exempted from balanced subsampling to preserve its meaning. It is computationally trivial but was still not trained here.
@@ -121,7 +170,7 @@ The actual variables are `WHU_Hi_LongKou` and `WHU_Hi_LongKou_gt`. Observed cube
 - Completion markers are atomic and written after per-method artifacts. Candidate audits survive a failure, but incomplete candidate models are not checkpointed; the failed method's search restarts. Source, configuration, data SHA256 and library versions prevent mixing incompatible runs. Duplicate run lock is exclusive.
 - Timings separate selected fit, accumulated preprocessing, search wall time and batched test prediction. Shared caches are order-dependent and selected spatial-matrix reconstruction is outside prediction timing; these are not isolated cold-start benchmarks.
 
-## Verification executed and actual outcomes
+### Verification executed on 29 October and actual outcomes
 
 All commands were run in this workspace. Cache prefixes were directed to `/tmp` where needed by the filesystem sandbox.
 
@@ -148,7 +197,7 @@ All commands were run in this workspace. Cache prefixes were directed to `/tmp` 
 
 The final unittest run's console capture is `/tmp/frss-verification.log`. It contains an expected parser-error message from the test asserting that `--run` refuses training; the test itself passes. Negative-path log messages from deliberately incompatible resume tests are captured as assertions. No metrics from a non-learning stub are retained in the repository as research output.
 
-## Environment issues encountered and fixes
+### Initial environment issues encountered and fixes
 
 1. Sandboxed terminal DNS initially failed. Approved network access was used only to retrieve the official data and install packages into project-local `.venv`.
 2. The official server rejected urllib's default Python user-agent with HTTP403. Retrying with a browser user-agent succeeded; that header is included in the downloader.
@@ -159,7 +208,9 @@ The final unittest run's console capture is `/tmp/frss-verification.log`. It con
 
 Exact final package versions are in `requirements-lock.txt`; principal packages: NumPy1.26.4, SciPy1.13.1, scikit-learn1.6.1, Matplotlib3.9.4, pandas2.2.3, h5py3.12.1, joblib1.5.3, threadpoolctl3.7.0. No global package upgrades/uninstalls were made.
 
-## Scientific and submission status checklist
+### Historical checklist as of 29 October
+
+This checklist records the initial handoff. Use the 5 November status table and current handoff above for the completed project's status.
 
 - [x] Actual dataset loader verified on official LongKou files.
 - [x] Labels/background and observed class mapping/counts verified.
@@ -179,7 +230,9 @@ Exact final package versions are in `requirements-lock.txt`; principal packages:
 - [ ] Completed empirical report and contributions — pending measurement and team input.
 - [ ] Public repository visibility and final commit hash — pending publication/verification.
 
-## Remaining steps and exact handoff
+### Historical handoff as of 29 October
+
+The following instructions and limitations were recorded before training authorization and are retained as history. They are superseded by the current handoff above.
 
 For a non-training review, use `--dry-run`, `--validate-data`, `--smoke-test` and unittest commands in README. Data is already present on this machine. Another checkout needs the downloader and environment installation.
 
